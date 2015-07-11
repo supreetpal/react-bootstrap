@@ -65,5 +65,8 @@ export Well from './Well';
 export Portal from './Portal';
 export Position from './Position';
 
+export Collapse from './Collapse';
+export Fade from './Collapse';
+
 export * as FormControls from './FormControls';
 export * as utils from './utils';
