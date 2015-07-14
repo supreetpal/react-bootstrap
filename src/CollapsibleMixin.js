@@ -1,19 +1,28 @@
-import React from 'react';
-import TransitionEvents from './utils/TransitionEvents';
+'use strict';
 
-const CollapsibleMixin = {
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _utilsTransitionEvents = require('./utils/TransitionEvents');
+
+var _utilsTransitionEvents2 = _interopRequireDefault(_utilsTransitionEvents);
+
+var CollapsibleMixin = {
 
   propTypes: {
-    defaultExpanded: React.PropTypes.bool,
-    expanded: React.PropTypes.bool
+    defaultExpanded: _react2['default'].PropTypes.bool,
+    expanded: _react2['default'].PropTypes.bool
   },
 
-  getInitialState(){
-    let defaultExpanded = this.props.defaultExpanded != null ?
-      this.props.defaultExpanded :
-        this.props.expanded != null ?
-        this.props.expanded :
-        false;
+  getInitialState: function getInitialState() {
+    var defaultExpanded = this.props.defaultExpanded != null ? this.props.defaultExpanded : this.props.expanded != null ? this.props.expanded : false;
 
     return {
       expanded: defaultExpanded,
@@ -21,8 +30,8 @@ const CollapsibleMixin = {
     };
   },
 
-  componentWillUpdate(nextProps, nextState){
-    let willExpanded = nextProps.expanded != null ? nextProps.expanded : nextState.expanded;
+  componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
+    var willExpanded = nextProps.expanded != null ? nextProps.expanded : nextState.expanded;
     if (willExpanded === this.isExpanded()) {
       return;
     }
@@ -32,11 +41,11 @@ const CollapsibleMixin = {
     // the collapsing class is applied (after collapsing is applied the in class
     // is removed and the node's dimension will be wrong)
 
-    let node = this.getCollapsibleDOMNode();
-    let dimension = this.dimension();
-    let value = '0';
+    var node = this.getCollapsibleDOMNode();
+    var dimension = this.dimension();
+    var value = '0';
 
-    if(!willExpanded){
+    if (!willExpanded) {
       value = this.getCollapsibleDimensionValue();
     }
 
@@ -45,7 +54,7 @@ const CollapsibleMixin = {
     this._afterWillUpdate();
   },
 
-  componentDidUpdate(prevProps, prevState){
+  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
     // check if expanded is being toggled; if so, set collapsing
     this._checkToggleCollapsing(prevProps, prevState);
 
@@ -54,21 +63,20 @@ const CollapsibleMixin = {
   },
 
   // helps enable test stubs
-  _afterWillUpdate(){
-  },
+  _afterWillUpdate: function _afterWillUpdate() {},
 
-  _checkStartAnimation(){
-    if(!this.state.collapsing) {
+  _checkStartAnimation: function _checkStartAnimation() {
+    if (!this.state.collapsing) {
       return;
     }
 
-    let node = this.getCollapsibleDOMNode();
-    let dimension = this.dimension();
-    let value = this.getCollapsibleDimensionValue();
+    var node = this.getCollapsibleDOMNode();
+    var dimension = this.dimension();
+    var value = this.getCollapsibleDimensionValue();
 
     // setting the dimension here starts the transition animation
-    let result;
-    if(this.isExpanded()) {
+    var result = undefined;
+    if (this.isExpanded()) {
       result = value + 'px';
     } else {
       result = '0px';
@@ -76,11 +84,11 @@ const CollapsibleMixin = {
     node.style[dimension] = result;
   },
 
-  _checkToggleCollapsing(prevProps, prevState){
-    let wasExpanded = prevProps.expanded != null ? prevProps.expanded : prevState.expanded;
-    let isExpanded = this.isExpanded();
-    if(wasExpanded !== isExpanded){
-      if(wasExpanded) {
+  _checkToggleCollapsing: function _checkToggleCollapsing(prevProps, prevState) {
+    var wasExpanded = prevProps.expanded != null ? prevProps.expanded : prevState.expanded;
+    var isExpanded = this.isExpanded();
+    if (wasExpanded !== isExpanded) {
+      if (wasExpanded) {
         this._handleCollapse();
       } else {
         this._handleExpand();
@@ -88,17 +96,19 @@ const CollapsibleMixin = {
     }
   },
 
-  _handleExpand(){
-    let node = this.getCollapsibleDOMNode();
-    let dimension = this.dimension();
+  _handleExpand: function _handleExpand() {
+    var _this = this;
 
-    let complete = () => {
-      this._removeEndEventListener(node, complete);
+    var node = this.getCollapsibleDOMNode();
+    var dimension = this.dimension();
+
+    var complete = function complete() {
+      _this._removeEndEventListener(node, complete);
       // remove dimension value - this ensures the collapsible item can grow
       // in dimension after initial display (such as an image loading)
       node.style[dimension] = '';
-      this.setState({
-        collapsing:false
+      _this.setState({
+        collapsing: false
       });
     };
 
@@ -109,12 +119,14 @@ const CollapsibleMixin = {
     });
   },
 
-  _handleCollapse(){
-    let node = this.getCollapsibleDOMNode();
+  _handleCollapse: function _handleCollapse() {
+    var _this2 = this;
 
-    let complete = () => {
-      this._removeEndEventListener(node, complete);
-      this.setState({
+    var node = this.getCollapsibleDOMNode();
+
+    var complete = function complete() {
+      _this2._removeEndEventListener(node, complete);
+      _this2.setState({
         collapsing: false
       });
     };
@@ -127,30 +139,28 @@ const CollapsibleMixin = {
   },
 
   // helps enable test stubs
-  _addEndEventListener(node, complete){
-    TransitionEvents.addEndEventListener(node, complete);
+  _addEndEventListener: function _addEndEventListener(node, complete) {
+    _utilsTransitionEvents2['default'].addEndEventListener(node, complete);
   },
 
   // helps enable test stubs
-  _removeEndEventListener(node, complete){
-    TransitionEvents.removeEndEventListener(node, complete);
+  _removeEndEventListener: function _removeEndEventListener(node, complete) {
+    _utilsTransitionEvents2['default'].removeEndEventListener(node, complete);
   },
 
-  dimension(){
-    return (typeof this.getCollapsibleDimension === 'function') ?
-      this.getCollapsibleDimension() :
-      'height';
+  dimension: function dimension() {
+    return typeof this.getCollapsibleDimension === 'function' ? this.getCollapsibleDimension() : 'height';
   },
 
-  isExpanded(){
+  isExpanded: function isExpanded() {
     return this.props.expanded != null ? this.props.expanded : this.state.expanded;
   },
 
-  getCollapsibleClassSet(className) {
-    let classes = {};
+  getCollapsibleClassSet: function getCollapsibleClassSet(className) {
+    var classes = {};
 
     if (typeof className === 'string') {
-      className.split(' ').forEach(subClasses => {
+      className.split(' ').forEach(function (subClasses) {
         if (subClasses) {
           classes[subClasses] = true;
         }
@@ -159,10 +169,11 @@ const CollapsibleMixin = {
 
     classes.collapsing = this.state.collapsing;
     classes.collapse = !this.state.collapsing;
-    classes.in = this.isExpanded() && !this.state.collapsing;
+    classes['in'] = this.isExpanded() && !this.state.collapsing;
 
     return classes;
   }
 };
 
-export default CollapsibleMixin;
+exports['default'] = CollapsibleMixin;
+module.exports = exports['default'];

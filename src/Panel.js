@@ -1,29 +1,51 @@
-import React, { cloneElement } from 'react';
-import classNames from 'classnames';
+'use strict';
 
-import BootstrapMixin from './BootstrapMixin';
-import CollapsibleMixin from './CollapsibleMixin';
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-const Panel = React.createClass({
-  mixins: [BootstrapMixin, CollapsibleMixin],
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _BootstrapMixin = require('./BootstrapMixin');
+
+var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+
+var _CollapsibleMixin = require('./CollapsibleMixin');
+
+var _CollapsibleMixin2 = _interopRequireDefault(_CollapsibleMixin);
+
+var Panel = _react2['default'].createClass({
+  displayName: 'Panel',
+
+  mixins: [_BootstrapMixin2['default'], _CollapsibleMixin2['default']],
 
   propTypes: {
-    collapsible: React.PropTypes.bool,
-    onSelect: React.PropTypes.func,
-    header: React.PropTypes.node,
-    id: React.PropTypes.string,
-    footer: React.PropTypes.node,
-    eventKey: React.PropTypes.any
+    collapsible: _react2['default'].PropTypes.bool,
+    onSelect: _react2['default'].PropTypes.func,
+    header: _react2['default'].PropTypes.node,
+    id: _react2['default'].PropTypes.string,
+    footer: _react2['default'].PropTypes.node,
+    eventKey: _react2['default'].PropTypes.any
   },
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       bsClass: 'panel',
       bsStyle: 'default'
     };
   },
 
-  handleSelect(e){
+  handleSelect: function handleSelect(e) {
     e.selected = true;
 
     if (this.props.onSelect) {
@@ -37,71 +59,71 @@ const Panel = React.createClass({
     }
   },
 
-  handleToggle(){
-    this.setState({expanded:!this.state.expanded});
+  handleToggle: function handleToggle() {
+    this.setState({ expanded: !this.state.expanded });
   },
 
-  getCollapsibleDimensionValue() {
-    return React.findDOMNode(this.refs.panel).scrollHeight;
+  getCollapsibleDimensionValue: function getCollapsibleDimensionValue() {
+    return _react2['default'].findDOMNode(this.refs.panel).scrollHeight;
   },
 
-  getCollapsibleDOMNode() {
+  getCollapsibleDOMNode: function getCollapsibleDOMNode() {
     if (!this.isMounted() || !this.refs || !this.refs.panel) {
       return null;
     }
 
-    return React.findDOMNode(this.refs.panel);
+    return _react2['default'].findDOMNode(this.refs.panel);
   },
 
-  render() {
-    return (
-      <div {...this.props}
-        className={classNames(this.props.className, this.getBsClassSet())}
-        id={this.props.collapsible ? null : this.props.id} onSelect={null}>
-        {this.renderHeading()}
-        {this.props.collapsible ? this.renderCollapsibleBody() : this.renderBody()}
-        {this.renderFooter()}
-      </div>
+  render: function render() {
+    return _react2['default'].createElement(
+      'div',
+      _extends({}, this.props, {
+        className: (0, _classnames2['default'])(this.props.className, this.getBsClassSet()),
+        id: this.props.collapsible ? null : this.props.id, onSelect: null }),
+      this.renderHeading(),
+      this.props.collapsible ? this.renderCollapsibleBody() : this.renderBody(),
+      this.renderFooter()
     );
   },
 
-  renderCollapsibleBody() {
-    let collapseClass = this.prefixClass('collapse');
+  renderCollapsibleBody: function renderCollapsibleBody() {
+    var collapseClass = this.prefixClass('collapse');
 
-    return (
-      <div
-        className={classNames(this.getCollapsibleClassSet(collapseClass))}
-        id={this.props.id}
-        ref='panel'
-        aria-expanded={this.isExpanded() ? 'true' : 'false'}>
-        {this.renderBody()}
-      </div>
+    return _react2['default'].createElement(
+      'div',
+      {
+        className: (0, _classnames2['default'])(this.getCollapsibleClassSet(collapseClass)),
+        id: this.props.id,
+        ref: 'panel',
+        'aria-expanded': this.isExpanded() ? 'true' : 'false' },
+      this.renderBody()
     );
   },
 
-  renderBody() {
-    let allChildren = this.props.children;
-    let bodyElements = [];
-    let panelBodyChildren = [];
-    let bodyClass = this.prefixClass('body');
+  renderBody: function renderBody() {
+    var allChildren = this.props.children;
+    var bodyElements = [];
+    var panelBodyChildren = [];
+    var bodyClass = this.prefixClass('body');
 
     function getProps() {
-      return {key: bodyElements.length};
+      return { key: bodyElements.length };
     }
 
-    function addPanelChild (child) {
-      bodyElements.push(cloneElement(child, getProps()));
+    function addPanelChild(child) {
+      bodyElements.push((0, _react.cloneElement)(child, getProps()));
     }
 
-    function addPanelBody (children) {
-      bodyElements.push(
-        <div className={bodyClass} {...getProps()}>
-          {children}
-        </div>
-      );
+    function addPanelBody(children) {
+      bodyElements.push(_react2['default'].createElement(
+        'div',
+        _extends({ className: bodyClass }, getProps()),
+        children
+      ));
     }
 
-    function maybeRenderPanelBody () {
+    function maybeRenderPanelBody() {
       if (panelBodyChildren.length === 0) {
         return;
       }
@@ -119,7 +141,7 @@ const Panel = React.createClass({
       }
     } else {
 
-      allChildren.forEach(function(child) {
+      allChildren.forEach((function (child) {
         if (this.shouldRenderFill(child)) {
           maybeRenderPanelBody();
 
@@ -128,7 +150,7 @@ const Panel = React.createClass({
         } else {
           panelBodyChildren.push(child);
         }
-      }.bind(this));
+      }).bind(this));
 
       maybeRenderPanelBody();
     }
@@ -136,74 +158,72 @@ const Panel = React.createClass({
     return bodyElements;
   },
 
-  shouldRenderFill(child) {
-    return React.isValidElement(child) && child.props.fill != null;
+  shouldRenderFill: function shouldRenderFill(child) {
+    return _react2['default'].isValidElement(child) && child.props.fill != null;
   },
 
-  renderHeading() {
-    let header = this.props.header;
+  renderHeading: function renderHeading() {
+    var header = this.props.header;
 
     if (!header) {
       return null;
     }
 
-    if (!React.isValidElement(header) || Array.isArray(header)) {
-      header = this.props.collapsible ?
-        this.renderCollapsibleTitle(header) : header;
+    if (!_react2['default'].isValidElement(header) || Array.isArray(header)) {
+      header = this.props.collapsible ? this.renderCollapsibleTitle(header) : header;
     } else {
-      const className = classNames(
-        this.prefixClass('title'), header.props.className
-      );
+      var className = (0, _classnames2['default'])(this.prefixClass('title'), header.props.className);
 
       if (this.props.collapsible) {
-        header = cloneElement(header, {
-          className,
+        header = (0, _react.cloneElement)(header, {
+          className: className,
           children: this.renderAnchor(header.props.children)
         });
       } else {
-        header = cloneElement(header, {className});
+        header = (0, _react.cloneElement)(header, { className: className });
       }
     }
 
-    return (
-      <div className={this.prefixClass('heading')}>
-        {header}
-      </div>
+    return _react2['default'].createElement(
+      'div',
+      { className: this.prefixClass('heading') },
+      header
     );
   },
 
-  renderAnchor(header) {
-    return (
-      <a
-        href={'#' + (this.props.id || '')}
-        aria-controls={this.props.collapsible ? this.props.id : null}
-        className={this.isExpanded() ? null : 'collapsed'}
-        aria-expanded={this.isExpanded() ? 'true' : 'false'}
-        onClick={this.handleSelect}>
-        {header}
-      </a>
+  renderAnchor: function renderAnchor(header) {
+    return _react2['default'].createElement(
+      'a',
+      {
+        href: '#' + (this.props.id || ''),
+        'aria-controls': this.props.collapsible ? this.props.id : null,
+        className: this.isExpanded() ? null : 'collapsed',
+        'aria-expanded': this.isExpanded() ? 'true' : 'false',
+        onClick: this.handleSelect },
+      header
     );
   },
 
-  renderCollapsibleTitle(header) {
-    return (
-      <h4 className={this.prefixClass('title')}>
-        {this.renderAnchor(header)}
-      </h4>
+  renderCollapsibleTitle: function renderCollapsibleTitle(header) {
+    return _react2['default'].createElement(
+      'h4',
+      { className: this.prefixClass('title') },
+      this.renderAnchor(header)
     );
   },
 
-  renderFooter() {
+  renderFooter: function renderFooter() {
     if (!this.props.footer) {
       return null;
     }
 
-    return (
-      <div className={this.prefixClass('footer')}>
-        {this.props.footer}
-      </div>
+    return _react2['default'].createElement(
+      'div',
+      { className: this.prefixClass('footer') },
+      this.props.footer
     );
   }
 });
 
-export default Panel;
+exports['default'] = Panel;
+module.exports = exports['default'];

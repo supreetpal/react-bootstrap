@@ -1,21 +1,37 @@
-import React from 'react';
-import domUtils from './utils/domUtils';
-import EventListener from './utils/EventListener';
+'use strict';
 
-const AffixMixin = {
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _utilsDomUtils = require('./utils/domUtils');
+
+var _utilsDomUtils2 = _interopRequireDefault(_utilsDomUtils);
+
+var _utilsEventListener = require('./utils/EventListener');
+
+var _utilsEventListener2 = _interopRequireDefault(_utilsEventListener);
+
+var AffixMixin = {
   propTypes: {
-    offset: React.PropTypes.number,
-    offsetTop: React.PropTypes.number,
-    offsetBottom: React.PropTypes.number
+    offset: _react2['default'].PropTypes.number,
+    offsetTop: _react2['default'].PropTypes.number,
+    offsetBottom: _react2['default'].PropTypes.number
   },
 
-  getInitialState() {
+  getInitialState: function getInitialState() {
     return {
       affixClass: 'affix-top'
     };
   },
 
-  getPinnedOffset(DOMNode) {
+  getPinnedOffset: function getPinnedOffset(DOMNode) {
     if (this.pinnedOffset) {
       return this.pinnedOffset;
     }
@@ -23,33 +39,38 @@ const AffixMixin = {
     DOMNode.className = DOMNode.className.replace(/affix-top|affix-bottom|affix/, '');
     DOMNode.className += DOMNode.className.length ? ' affix' : 'affix';
 
-    this.pinnedOffset = domUtils.getOffset(DOMNode).top - window.pageYOffset;
+    this.pinnedOffset = _utilsDomUtils2['default'].getOffset(DOMNode).top - window.pageYOffset;
 
     return this.pinnedOffset;
   },
 
-  checkPosition() {
-    let DOMNode, scrollHeight, scrollTop, position, offsetTop, offsetBottom,
-        affix, affixType, affixPositionTop;
+  checkPosition: function checkPosition() {
+    var DOMNode = undefined,
+        scrollHeight = undefined,
+        scrollTop = undefined,
+        position = undefined,
+        offsetTop = undefined,
+        offsetBottom = undefined,
+        affix = undefined,
+        affixType = undefined,
+        affixPositionTop = undefined;
 
     // TODO: or not visible
     if (!this.isMounted()) {
       return;
     }
 
-    DOMNode = React.findDOMNode(this);
+    DOMNode = _react2['default'].findDOMNode(this);
     scrollHeight = document.documentElement.offsetHeight;
     scrollTop = window.pageYOffset;
-    position = domUtils.getOffset(DOMNode);
+    position = _utilsDomUtils2['default'].getOffset(DOMNode);
 
     if (this.affixed === 'top') {
       position.top += scrollTop;
     }
 
-    offsetTop = this.props.offsetTop != null ?
-      this.props.offsetTop : this.props.offset;
-    offsetBottom = this.props.offsetBottom != null ?
-      this.props.offsetBottom : this.props.offset;
+    offsetTop = this.props.offsetTop != null ? this.props.offsetTop : this.props.offset;
+    offsetBottom = this.props.offsetBottom != null ? this.props.offsetBottom : this.props.offset;
 
     if (offsetTop == null && offsetBottom == null) {
       return;
@@ -61,11 +82,11 @@ const AffixMixin = {
       offsetBottom = 0;
     }
 
-    if (this.unpin != null && (scrollTop + this.unpin <= position.top)) {
+    if (this.unpin != null && scrollTop + this.unpin <= position.top) {
       affix = false;
-    } else if (offsetBottom != null && (position.top + DOMNode.offsetHeight >= scrollHeight - offsetBottom)) {
+    } else if (offsetBottom != null && position.top + DOMNode.offsetHeight >= scrollHeight - offsetBottom) {
       affix = 'bottom';
-    } else if (offsetTop != null && (scrollTop <= offsetTop)) {
+    } else if (offsetTop != null && scrollTop <= offsetTop) {
       affix = 'top';
     } else {
       affix = false;
@@ -82,32 +103,29 @@ const AffixMixin = {
     affixType = 'affix' + (affix ? '-' + affix : '');
 
     this.affixed = affix;
-    this.unpin = affix === 'bottom' ?
-      this.getPinnedOffset(DOMNode) : null;
+    this.unpin = affix === 'bottom' ? this.getPinnedOffset(DOMNode) : null;
 
     if (affix === 'bottom') {
       DOMNode.className = DOMNode.className.replace(/affix-top|affix-bottom|affix/, 'affix-bottom');
-      affixPositionTop = scrollHeight - offsetBottom - DOMNode.offsetHeight - domUtils.getOffset(DOMNode).top;
+      affixPositionTop = scrollHeight - offsetBottom - DOMNode.offsetHeight - _utilsDomUtils2['default'].getOffset(DOMNode).top;
     }
 
     this.setState({
       affixClass: affixType,
-      affixPositionTop
+      affixPositionTop: affixPositionTop
     });
   },
 
-  checkPositionWithEventLoop() {
+  checkPositionWithEventLoop: function checkPositionWithEventLoop() {
     setTimeout(this.checkPosition, 0);
   },
 
-  componentDidMount() {
-    this._onWindowScrollListener =
-      EventListener.listen(window, 'scroll', this.checkPosition);
-    this._onDocumentClickListener =
-      EventListener.listen(domUtils.ownerDocument(this), 'click', this.checkPositionWithEventLoop);
+  componentDidMount: function componentDidMount() {
+    this._onWindowScrollListener = _utilsEventListener2['default'].listen(window, 'scroll', this.checkPosition);
+    this._onDocumentClickListener = _utilsEventListener2['default'].listen(_utilsDomUtils2['default'].ownerDocument(this), 'click', this.checkPositionWithEventLoop);
   },
 
-  componentWillUnmount() {
+  componentWillUnmount: function componentWillUnmount() {
     if (this._onWindowScrollListener) {
       this._onWindowScrollListener.remove();
     }
@@ -117,11 +135,12 @@ const AffixMixin = {
     }
   },
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
     if (prevState.affixClass === this.state.affixClass) {
       this.checkPositionWithEventLoop();
     }
   }
 };
 
-export default AffixMixin;
+exports['default'] = AffixMixin;
+module.exports = exports['default'];

@@ -1,62 +1,88 @@
-import React, { cloneElement } from 'react';
-import BootstrapMixin from './BootstrapMixin';
-import CollapsibleMixin from './CollapsibleMixin';
-import classNames from 'classnames';
-import domUtils from './utils/domUtils';
+'use strict';
 
-import ValidComponentChildren from './utils/ValidComponentChildren';
-import createChainedFunction from './utils/createChainedFunction';
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-const CollapsibleNav = React.createClass({
-  mixins: [BootstrapMixin, CollapsibleMixin],
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _BootstrapMixin = require('./BootstrapMixin');
+
+var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+
+var _CollapsibleMixin = require('./CollapsibleMixin');
+
+var _CollapsibleMixin2 = _interopRequireDefault(_CollapsibleMixin);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _utilsDomUtils = require('./utils/domUtils');
+
+var _utilsDomUtils2 = _interopRequireDefault(_utilsDomUtils);
+
+var _utilsValidComponentChildren = require('./utils/ValidComponentChildren');
+
+var _utilsValidComponentChildren2 = _interopRequireDefault(_utilsValidComponentChildren);
+
+var _utilsCreateChainedFunction = require('./utils/createChainedFunction');
+
+var _utilsCreateChainedFunction2 = _interopRequireDefault(_utilsCreateChainedFunction);
+
+var CollapsibleNav = _react2['default'].createClass({
+  displayName: 'CollapsibleNav',
+
+  mixins: [_BootstrapMixin2['default'], _CollapsibleMixin2['default']],
 
   propTypes: {
-    onSelect: React.PropTypes.func,
-    activeHref: React.PropTypes.string,
-    activeKey: React.PropTypes.any,
-    collapsible: React.PropTypes.bool,
-    expanded: React.PropTypes.bool,
-    eventKey: React.PropTypes.any
+    onSelect: _react2['default'].PropTypes.func,
+    activeHref: _react2['default'].PropTypes.string,
+    activeKey: _react2['default'].PropTypes.any,
+    collapsible: _react2['default'].PropTypes.bool,
+    expanded: _react2['default'].PropTypes.bool,
+    eventKey: _react2['default'].PropTypes.any
   },
 
-  getCollapsibleDOMNode() {
-    return React.findDOMNode(this);
+  getCollapsibleDOMNode: function getCollapsibleDOMNode() {
+    return _react2['default'].findDOMNode(this);
   },
 
-  getCollapsibleDimensionValue() {
-    let height = 0;
-    let nodes = this.refs;
-    for (let key in nodes) {
+  getCollapsibleDimensionValue: function getCollapsibleDimensionValue() {
+    var height = 0;
+    var nodes = this.refs;
+    for (var key in nodes) {
       if (nodes.hasOwnProperty(key)) {
 
-        let n = React.findDOMNode(nodes[key]);
-        let h = n.offsetHeight;
-        let computedStyles = domUtils.getComputedStyles(n);
+        var n = _react2['default'].findDOMNode(nodes[key]);
+        var h = n.offsetHeight;
+        var computedStyles = _utilsDomUtils2['default'].getComputedStyles(n);
 
-        height += (h +
-          parseInt(computedStyles.marginTop, 10) +
-          parseInt(computedStyles.marginBottom, 10)
-        );
+        height += h + parseInt(computedStyles.marginTop, 10) + parseInt(computedStyles.marginBottom, 10);
       }
     }
     return height;
   },
 
-  render() {
+  render: function render() {
     /*
      * this.props.collapsible is set in NavBar when an eventKey is supplied.
      */
-    const classes = this.props.collapsible ? this.getCollapsibleClassSet('navbar-collapse') : null;
-    const renderChildren = this.props.collapsible ? this.renderCollapsibleNavChildren : this.renderChildren;
+    var classes = this.props.collapsible ? this.getCollapsibleClassSet('navbar-collapse') : null;
+    var renderChildren = this.props.collapsible ? this.renderCollapsibleNavChildren : this.renderChildren;
 
-    return (
-      <div eventKey={this.props.eventKey} className={classNames(this.props.className, classes)} >
-        {ValidComponentChildren.map(this.props.children, renderChildren)}
-      </div>
+    return _react2['default'].createElement(
+      'div',
+      { eventKey: this.props.eventKey, className: (0, _classnames2['default'])(this.props.className, classes) },
+      _utilsValidComponentChildren2['default'].map(this.props.children, renderChildren)
     );
   },
 
-  getChildActiveProp(child) {
+  getChildActiveProp: function getChildActiveProp(child) {
     if (child.props.active) {
       return true;
     }
@@ -74,35 +100,30 @@ const CollapsibleNav = React.createClass({
     return child.props.active;
   },
 
-  renderChildren(child, index) {
-    let key = child.key ? child.key : index;
-    return cloneElement(
-      child,
-      {
-        activeKey: this.props.activeKey,
-        activeHref: this.props.activeHref,
-        ref: 'nocollapse_' + key,
-        key,
-        navItem: true
-      }
-    );
+  renderChildren: function renderChildren(child, index) {
+    var key = child.key ? child.key : index;
+    return (0, _react.cloneElement)(child, {
+      activeKey: this.props.activeKey,
+      activeHref: this.props.activeHref,
+      ref: 'nocollapse_' + key,
+      key: key,
+      navItem: true
+    });
   },
 
-  renderCollapsibleNavChildren(child, index) {
-    let key = child.key ? child.key : index;
-    return cloneElement(
-      child,
-      {
-        active: this.getChildActiveProp(child),
-        activeKey: this.props.activeKey,
-        activeHref: this.props.activeHref,
-        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
-        ref: 'collapsible_' + key,
-        key,
-        navItem: true
-      }
-    );
+  renderCollapsibleNavChildren: function renderCollapsibleNavChildren(child, index) {
+    var key = child.key ? child.key : index;
+    return (0, _react.cloneElement)(child, {
+      active: this.getChildActiveProp(child),
+      activeKey: this.props.activeKey,
+      activeHref: this.props.activeHref,
+      onSelect: (0, _utilsCreateChainedFunction2['default'])(child.props.onSelect, this.props.onSelect),
+      ref: 'collapsible_' + key,
+      key: key,
+      navItem: true
+    });
   }
 });
 
-export default CollapsibleNav;
+exports['default'] = CollapsibleNav;
+module.exports = exports['default'];

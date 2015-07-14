@@ -1,4 +1,14 @@
-import React from 'react';
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
 
 /**
  * Maps children that are typically specified as `props.children`,
@@ -13,11 +23,11 @@ import React from 'react';
  * @return {object} Object containing the ordered map of results.
  */
 function mapValidComponents(children, func, context) {
-  let index = 0;
+  var index = 0;
 
-  return React.Children.map(children, function (child) {
-    if (React.isValidElement(child)) {
-      let lastIndex = index;
+  return _react2['default'].Children.map(children, function (child) {
+    if (_react2['default'].isValidElement(child)) {
+      var lastIndex = index;
       index++;
       return func.call(context, child, lastIndex);
     }
@@ -38,10 +48,10 @@ function mapValidComponents(children, func, context) {
  * @param {*} forEachContext Context for forEachContext.
  */
 function forEachValidComponents(children, func, context) {
-  let index = 0;
+  var index = 0;
 
-  return React.Children.forEach(children, function (child) {
-    if (React.isValidElement(child)) {
+  return _react2['default'].Children.forEach(children, function (child) {
+    if (_react2['default'].isValidElement(child)) {
       func.call(context, child, index);
       index++;
     }
@@ -55,10 +65,12 @@ function forEachValidComponents(children, func, context) {
  * @returns {number}
  */
 function numberOfValidComponents(children) {
-  let count = 0;
+  var count = 0;
 
-  React.Children.forEach(children, function (child) {
-    if (React.isValidElement(child)) { count++; }
+  _react2['default'].Children.forEach(children, function (child) {
+    if (_react2['default'].isValidElement(child)) {
+      count++;
+    }
   });
 
   return count;
@@ -71,10 +83,10 @@ function numberOfValidComponents(children) {
  * @returns {boolean}
  */
 function hasValidComponent(children) {
-  let hasValid = false;
+  var hasValid = false;
 
-  React.Children.forEach(children, function (child) {
-    if (!hasValid && React.isValidElement(child)) {
+  _react2['default'].Children.forEach(children, function (child) {
+    if (!hasValid && _react2['default'].isValidElement(child)) {
       hasValid = true;
     }
   });
@@ -82,9 +94,10 @@ function hasValidComponent(children) {
   return hasValid;
 }
 
-export default {
+exports['default'] = {
   map: mapValidComponents,
   forEach: forEachValidComponents,
   numberOf: numberOfValidComponents,
-  hasValidComponent
+  hasValidComponent: hasValidComponent
 };
+module.exports = exports['default'];

@@ -23,7 +23,12 @@
 /**
  * Does not take into account specific nature of platform.
  */
-const EventListener = {
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+var EventListener = {
   /**
    * Listen to DOM events during the bubble phase.
    *
@@ -32,18 +37,18 @@ const EventListener = {
    * @param {function} callback Callback function.
    * @return {object} Object with a `remove` method.
    */
-  listen(target, eventType, callback) {
+  listen: function listen(target, eventType, callback) {
     if (target.addEventListener) {
       target.addEventListener(eventType, callback, false);
       return {
-        remove() {
+        remove: function remove() {
           target.removeEventListener(eventType, callback, false);
         }
       };
     } else if (target.attachEvent) {
       target.attachEvent('on' + eventType, callback);
       return {
-        remove() {
+        remove: function remove() {
           target.detachEvent('on' + eventType, callback);
         }
       };
@@ -51,4 +56,5 @@ const EventListener = {
   }
 };
 
-export default EventListener;
+exports['default'] = EventListener;
+module.exports = exports['default'];

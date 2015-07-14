@@ -1,33 +1,58 @@
-import React, { cloneElement } from 'react';
-import classNames from 'classnames';
+'use strict';
 
-import ValidComponentChildren from './utils/ValidComponentChildren';
-import createChainedFunction from './utils/createChainedFunction';
-import BootstrapMixin from './BootstrapMixin';
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-const SubNav = React.createClass({
-  mixins: [BootstrapMixin],
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _utilsValidComponentChildren = require('./utils/ValidComponentChildren');
+
+var _utilsValidComponentChildren2 = _interopRequireDefault(_utilsValidComponentChildren);
+
+var _utilsCreateChainedFunction = require('./utils/createChainedFunction');
+
+var _utilsCreateChainedFunction2 = _interopRequireDefault(_utilsCreateChainedFunction);
+
+var _BootstrapMixin = require('./BootstrapMixin');
+
+var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+
+var SubNav = _react2['default'].createClass({
+  displayName: 'SubNav',
+
+  mixins: [_BootstrapMixin2['default']],
 
   propTypes: {
-    onSelect: React.PropTypes.func,
-    active: React.PropTypes.bool,
-    activeHref: React.PropTypes.string,
-    activeKey: React.PropTypes.any,
-    disabled: React.PropTypes.bool,
-    eventKey: React.PropTypes.any,
-    href: React.PropTypes.string,
-    title: React.PropTypes.string,
-    text: React.PropTypes.node,
-    target: React.PropTypes.string
+    onSelect: _react2['default'].PropTypes.func,
+    active: _react2['default'].PropTypes.bool,
+    activeHref: _react2['default'].PropTypes.string,
+    activeKey: _react2['default'].PropTypes.any,
+    disabled: _react2['default'].PropTypes.bool,
+    eventKey: _react2['default'].PropTypes.any,
+    href: _react2['default'].PropTypes.string,
+    title: _react2['default'].PropTypes.string,
+    text: _react2['default'].PropTypes.node,
+    target: _react2['default'].PropTypes.string
   },
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       bsClass: 'nav'
     };
   },
 
-  handleClick(e) {
+  handleClick: function handleClick(e) {
     if (this.props.onSelect) {
       e.preventDefault();
 
@@ -37,11 +62,11 @@ const SubNav = React.createClass({
     }
   },
 
-  isActive() {
+  isActive: function isActive() {
     return this.isChildActive(this);
   },
 
-  isChildActive(child) {
+  isChildActive: function isChildActive(child) {
     if (child.props.active) {
       return true;
     }
@@ -55,17 +80,13 @@ const SubNav = React.createClass({
     }
 
     if (child.props.children) {
-      let isActive = false;
+      var isActive = false;
 
-      ValidComponentChildren.forEach(
-        child.props.children,
-        function (grandchild) {
-          if (this.isChildActive(grandchild)) {
-            isActive = true;
-          }
-        },
-        this
-      );
+      _utilsValidComponentChildren2['default'].forEach(child.props.children, function (grandchild) {
+        if (this.isChildActive(grandchild)) {
+          isActive = true;
+        }
+      }, this);
 
       return isActive;
     }
@@ -73,7 +94,7 @@ const SubNav = React.createClass({
     return false;
   },
 
-  getChildActiveProp(child) {
+  getChildActiveProp: function getChildActiveProp(child) {
     if (child.props.active) {
       return true;
     }
@@ -91,39 +112,41 @@ const SubNav = React.createClass({
     return child.props.active;
   },
 
-  render() {
-    let classes = {
+  render: function render() {
+    var classes = {
       'active': this.isActive(),
       'disabled': this.props.disabled
     };
 
-    return (
-      <li {...this.props} className={classNames(this.props.className, classes)}>
-        <a
-          href={this.props.href}
-          title={this.props.title}
-          target={this.props.target}
-          onClick={this.handleClick}
-          ref="anchor">
-          {this.props.text}
-        </a>
-        <ul className="nav">
-          {ValidComponentChildren.map(this.props.children, this.renderNavItem)}
-        </ul>
-      </li>
+    return _react2['default'].createElement(
+      'li',
+      _extends({}, this.props, { className: (0, _classnames2['default'])(this.props.className, classes) }),
+      _react2['default'].createElement(
+        'a',
+        {
+          href: this.props.href,
+          title: this.props.title,
+          target: this.props.target,
+          onClick: this.handleClick,
+          ref: 'anchor' },
+        this.props.text
+      ),
+      _react2['default'].createElement(
+        'ul',
+        { className: 'nav' },
+        _utilsValidComponentChildren2['default'].map(this.props.children, this.renderNavItem)
+      )
     );
   },
 
-  renderNavItem(child, index) {
-    return cloneElement(
-      child,
-      {
-        active: this.getChildActiveProp(child),
-        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
-        key: child.key ? child.key : index
-      }
-    );
+  renderNavItem: function renderNavItem(child, index) {
+    return (0, _react.cloneElement)(child, {
+      active: this.getChildActiveProp(child),
+      onSelect: (0, _utilsCreateChainedFunction2['default'])(child.props.onSelect, this.props.onSelect),
+      key: child.key ? child.key : index
+    });
   }
 });
 
-export default SubNav;
+exports['default'] = SubNav;
+module.exports = exports['default'];

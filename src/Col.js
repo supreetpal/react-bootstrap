@@ -1,9 +1,32 @@
-import React from 'react';
-import classNames from 'classnames';
-import styleMaps from './styleMaps';
-import CustomPropTypes from './utils/CustomPropTypes';
+'use strict';
 
-const Col = React.createClass({
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _styleMaps = require('./styleMaps');
+
+var _styleMaps2 = _interopRequireDefault(_styleMaps);
+
+var _utilsCustomPropTypes = require('./utils/CustomPropTypes');
+
+var _utilsCustomPropTypes2 = _interopRequireDefault(_utilsCustomPropTypes);
+
+var Col = _react2['default'].createClass({
+  displayName: 'Col',
+
   propTypes: {
     /**
      * The number of columns you wish to span
@@ -12,7 +35,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-xs-`
      */
-    xs: React.PropTypes.number,
+    xs: _react2['default'].PropTypes.number,
     /**
      * The number of columns you wish to span
      *
@@ -20,7 +43,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-sm-`
      */
-    sm: React.PropTypes.number,
+    sm: _react2['default'].PropTypes.number,
     /**
      * The number of columns you wish to span
      *
@@ -28,7 +51,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-md-`
      */
-    md: React.PropTypes.number,
+    md: _react2['default'].PropTypes.number,
     /**
      * The number of columns you wish to span
      *
@@ -36,7 +59,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-lg-`
      */
-    lg: React.PropTypes.number,
+    lg: _react2['default'].PropTypes.number,
     /**
      * Move columns to the right
      *
@@ -44,7 +67,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-xs-offset-`
      */
-    xsOffset: React.PropTypes.number,
+    xsOffset: _react2['default'].PropTypes.number,
     /**
      * Move columns to the right
      *
@@ -52,7 +75,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-sm-offset-`
      */
-    smOffset: React.PropTypes.number,
+    smOffset: _react2['default'].PropTypes.number,
     /**
      * Move columns to the right
      *
@@ -60,7 +83,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-md-offset-`
      */
-    mdOffset: React.PropTypes.number,
+    mdOffset: _react2['default'].PropTypes.number,
     /**
      * Move columns to the right
      *
@@ -68,7 +91,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-lg-offset-`
      */
-    lgOffset: React.PropTypes.number,
+    lgOffset: _react2['default'].PropTypes.number,
     /**
      * Change the order of grid columns to the right
      *
@@ -76,7 +99,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-xs-push-`
      */
-    xsPush: React.PropTypes.number,
+    xsPush: _react2['default'].PropTypes.number,
     /**
      * Change the order of grid columns to the right
      *
@@ -84,7 +107,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-sm-push-`
      */
-    smPush: React.PropTypes.number,
+    smPush: _react2['default'].PropTypes.number,
     /**
      * Change the order of grid columns to the right
      *
@@ -92,7 +115,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-md-push-`
      */
-    mdPush: React.PropTypes.number,
+    mdPush: _react2['default'].PropTypes.number,
     /**
      * Change the order of grid columns to the right
      *
@@ -100,7 +123,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-lg-push-`
      */
-    lgPush: React.PropTypes.number,
+    lgPush: _react2['default'].PropTypes.number,
     /**
      * Change the order of grid columns to the left
      *
@@ -108,7 +131,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-xs-pull-`
      */
-    xsPull: React.PropTypes.number,
+    xsPull: _react2['default'].PropTypes.number,
     /**
      * Change the order of grid columns to the left
      *
@@ -116,7 +139,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-sm-pull-`
      */
-    smPull: React.PropTypes.number,
+    smPull: _react2['default'].PropTypes.number,
     /**
      * Change the order of grid columns to the left
      *
@@ -124,7 +147,7 @@ const Col = React.createClass({
      *
      * class-prefix `col-md-pull-`
      */
-    mdPull: React.PropTypes.number,
+    mdPull: _react2['default'].PropTypes.number,
     /**
      * Change the order of grid columns to the left
      *
@@ -132,27 +155,27 @@ const Col = React.createClass({
      *
      * class-prefix `col-lg-pull-`
      */
-    lgPull: React.PropTypes.number,
+    lgPull: _react2['default'].PropTypes.number,
     /**
      * You can use a custom element for this component
      */
-    componentClass: CustomPropTypes.elementType
+    componentClass: _utilsCustomPropTypes2['default'].elementType
   },
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       componentClass: 'div'
     };
   },
 
-  render() {
-    let ComponentClass = this.props.componentClass;
-    let classes = {};
+  render: function render() {
+    var ComponentClass = this.props.componentClass;
+    var classes = {};
 
-    Object.keys(styleMaps.SIZES).forEach(function (key) {
-      let size = styleMaps.SIZES[key];
-      let prop = size;
-      let classPart = size + '-';
+    Object.keys(_styleMaps2['default'].SIZES).forEach(function (key) {
+      var size = _styleMaps2['default'].SIZES[key];
+      var prop = size;
+      var classPart = size + '-';
 
       if (this.props[prop]) {
         classes['col-' + classPart + this.props[prop]] = true;
@@ -177,12 +200,13 @@ const Col = React.createClass({
       }
     }, this);
 
-    return (
-      <ComponentClass {...this.props} className={classNames(this.props.className, classes)}>
-        {this.props.children}
-      </ComponentClass>
+    return _react2['default'].createElement(
+      ComponentClass,
+      _extends({}, this.props, { className: (0, _classnames2['default'])(this.props.className, classes) }),
+      this.props.children
     );
   }
 });
 
-export default Col;
+exports['default'] = Col;
+module.exports = exports['default'];

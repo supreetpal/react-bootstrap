@@ -1,13 +1,41 @@
 /*eslint-disable react/prop-types */
-import React, { cloneElement } from 'react';
+'use strict';
 
-import createChainedFunction from './utils/createChainedFunction';
-import createContextWrapper from './utils/createContextWrapper';
-import Overlay from './Overlay';
-import position from './utils/overlayPositionUtils';
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-import deprecationWarning from './utils/deprecationWarning';
-import warning from 'react/lib/warning';
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _utilsCreateChainedFunction = require('./utils/createChainedFunction');
+
+var _utilsCreateChainedFunction2 = _interopRequireDefault(_utilsCreateChainedFunction);
+
+var _utilsCreateContextWrapper = require('./utils/createContextWrapper');
+
+var _utilsCreateContextWrapper2 = _interopRequireDefault(_utilsCreateContextWrapper);
+
+var _Overlay = require('./Overlay');
+
+var _Overlay2 = _interopRequireDefault(_Overlay);
+
+var _utilsOverlayPositionUtils = require('./utils/overlayPositionUtils');
+
+var _utilsOverlayPositionUtils2 = _interopRequireDefault(_utilsOverlayPositionUtils);
+
+var _utilsDeprecationWarning = require('./utils/deprecationWarning');
+
+var _utilsDeprecationWarning2 = _interopRequireDefault(_utilsDeprecationWarning);
+
+var _reactLibWarning = require('react/lib/warning');
+
+var _reactLibWarning2 = _interopRequireDefault(_reactLibWarning);
 
 /**
  * Check if value one is inside or equal to the of value
@@ -23,106 +51,101 @@ function isOneOf(one, of) {
   return one === of;
 }
 
-const OverlayTrigger = React.createClass({
+var OverlayTrigger = _react2['default'].createClass({
+  displayName: 'OverlayTrigger',
 
-  propTypes: {
+  propTypes: _extends({}, _Overlay2['default'].propTypes, {
 
-    ...Overlay.propTypes,
-
-     /**
-     * Specify which action or actions trigger Overlay visibility
-     */
-    trigger: React.PropTypes.oneOfType([
-      React.PropTypes.oneOf(['manual', 'click', 'hover', 'focus']),
-      React.PropTypes.arrayOf(React.PropTypes.oneOf(['click', 'hover', 'focus']))
-    ]),
+    /**
+    * Specify which action or actions trigger Overlay visibility
+    */
+    trigger: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.oneOf(['manual', 'click', 'hover', 'focus']), _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.oneOf(['click', 'hover', 'focus']))]),
 
     /**
      * A millisecond delay amount to show and hide the Overlay once triggered
      */
-    delay: React.PropTypes.number,
+    delay: _react2['default'].PropTypes.number,
     /**
      * A millisecond delay amount before showing the Overlay once triggered.
      */
-    delayShow: React.PropTypes.number,
+    delayShow: _react2['default'].PropTypes.number,
     /**
      * A millisecond delay amount before hiding the Overlay once triggered.
      */
-    delayHide: React.PropTypes.number,
+    delayHide: _react2['default'].PropTypes.number,
 
     /**
      * The initial visibility state of the Overlay, for more nuanced visibility controll consider
      * using the Overlay component directly.
      */
-    defaultOverlayShown: React.PropTypes.bool,
+    defaultOverlayShown: _react2['default'].PropTypes.bool,
 
     /**
      * An element or text to overlay next to the target.
      */
-    overlay: React.PropTypes.node.isRequired,
+    overlay: _react2['default'].PropTypes.node.isRequired,
 
     /**
      * @private
      */
-    onBlur: React.PropTypes.func,
+    onBlur: _react2['default'].PropTypes.func,
     /**
      * @private
      */
-    onClick: React.PropTypes.func,
+    onClick: _react2['default'].PropTypes.func,
     /**
      * @private
      */
-    onFocus: React.PropTypes.func,
+    onFocus: _react2['default'].PropTypes.func,
     /**
      * @private
      */
-    onMouseEnter: React.PropTypes.func,
+    onMouseEnter: _react2['default'].PropTypes.func,
     /**
      * @private
      */
-    onMouseLeave: React.PropTypes.func,
+    onMouseLeave: _react2['default'].PropTypes.func,
 
     //override specific overlay props
     /**
      * @private
      */
-    target(){},
-     /**
-     * @private
-     */
-    onHide(){},
+    target: function target() {},
+    /**
+    * @private
+    */
+    onHide: function onHide() {},
     /**
      * @private
      */
-    show(){}
-  },
+    show: function show() {}
+  }),
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       trigger: ['hover', 'focus']
     };
   },
 
-  getInitialState() {
+  getInitialState: function getInitialState() {
     return {
-      isOverlayShown: this.props.defaultOverlayShown == null ?
-        false : this.props.defaultOverlayShown
+      isOverlayShown: this.props.defaultOverlayShown == null ? false : this.props.defaultOverlayShown
     };
   },
 
-  show() {
+  show: function show() {
     this.setState({
       isOverlayShown: true
     });
   },
 
-  hide() {
+  hide: function hide() {
     this.setState({
       isOverlayShown: false
     });
   },
 
-  toggle() {
+  toggle: function toggle() {
     if (this.state.isOverlayShown) {
       this.hide();
     } else {
@@ -130,48 +153,52 @@ const OverlayTrigger = React.createClass({
     }
   },
 
-  componentDidMount(){
+  componentDidMount: function componentDidMount() {
     this._mountNode = document.createElement('div');
-    React.render(this._overlay, this._mountNode);
+    _react2['default'].render(this._overlay, this._mountNode);
   },
 
-  componentWillUnmount() {
-    React.unmountComponentAtNode(this._mountNode);
+  componentWillUnmount: function componentWillUnmount() {
+    _react2['default'].unmountComponentAtNode(this._mountNode);
     this._mountNode = null;
     clearTimeout(this._hoverDelay);
   },
 
-  componentDidUpdate(){
-    React.render(this._overlay, this._mountNode);
+  componentDidUpdate: function componentDidUpdate() {
+    _react2['default'].render(this._overlay, this._mountNode);
   },
 
-  getOverlay(){
-    let props = {
-      show:      this.state.isOverlayShown,
-      onHide:    this.hide,
+  getOverlay: function getOverlay() {
+    var _this = this;
+
+    var props = {
+      show: this.state.isOverlayShown,
+      onHide: this.hide,
       rootClose: this.props.rootClose,
-      target:    ()=> React.findDOMNode(this),
+      target: function target() {
+        return _react2['default'].findDOMNode(_this);
+      },
       placement: this.props.placement,
       container: this.props.container,
       containerPadding: this.props.containerPadding
     };
 
-    let overlay = cloneElement(this.props.overlay, {
+    var overlay = (0, _react.cloneElement)(this.props.overlay, {
       placement: props.placement,
       container: props.container
     });
 
-    return (
-      <Overlay {...props}>
-        { overlay }
-      </Overlay>
+    return _react2['default'].createElement(
+      _Overlay2['default'],
+      props,
+      overlay
     );
   },
 
-  render() {
-    const trigger = React.Children.only(this.props.children);
+  render: function render() {
+    var trigger = _react2['default'].Children.only(this.props.children);
 
-    const props = {
+    var props = {
       'aria-describedby': this.props.overlay.props.id
     };
 
@@ -180,102 +207,89 @@ const OverlayTrigger = React.createClass({
 
     if (this.props.trigger !== 'manual') {
 
-      props.onClick = createChainedFunction(trigger.props.onClick, this.props.onClick);
+      props.onClick = (0, _utilsCreateChainedFunction2['default'])(trigger.props.onClick, this.props.onClick);
 
       if (isOneOf('click', this.props.trigger)) {
-        props.onClick = createChainedFunction(this.toggle, props.onClick);
+        props.onClick = (0, _utilsCreateChainedFunction2['default'])(this.toggle, props.onClick);
       }
 
       if (isOneOf('hover', this.props.trigger)) {
-        warning(!(this.props.trigger === 'hover'),
-          '[react-bootstrap] Specifying only the `"hover"` trigger limits the visibilty of the overlay to just mouse users. ' +
-          'Consider also including the `"focus"` trigger so that touch and keyboard only users can see the overlay as well.');
+        (0, _reactLibWarning2['default'])(!(this.props.trigger === 'hover'), '[react-bootstrap] Specifying only the `"hover"` trigger limits the visibilty of the overlay to just mouse users. ' + 'Consider also including the `"focus"` trigger so that touch and keyboard only users can see the overlay as well.');
 
-        props.onMouseOver = createChainedFunction(this.handleDelayedShow, this.props.onMouseOver);
-        props.onMouseOut = createChainedFunction(this.handleDelayedHide, this.props.onMouseOut);
+        props.onMouseOver = (0, _utilsCreateChainedFunction2['default'])(this.handleDelayedShow, this.props.onMouseOver);
+        props.onMouseOut = (0, _utilsCreateChainedFunction2['default'])(this.handleDelayedHide, this.props.onMouseOut);
       }
 
       if (isOneOf('focus', this.props.trigger)) {
-        props.onFocus = createChainedFunction(this.handleDelayedShow, this.props.onFocus);
-        props.onBlur = createChainedFunction(this.handleDelayedHide, this.props.onBlur);
+        props.onFocus = (0, _utilsCreateChainedFunction2['default'])(this.handleDelayedShow, this.props.onFocus);
+        props.onBlur = (0, _utilsCreateChainedFunction2['default'])(this.handleDelayedHide, this.props.onBlur);
       }
-    }
-    else {
-      deprecationWarning('"manual" trigger type', ' the Overlay component');
+    } else {
+      (0, _utilsDeprecationWarning2['default'])('"manual" trigger type', ' the Overlay component');
     }
 
-    return cloneElement(
-      trigger,
-      props
-    );
+    return (0, _react.cloneElement)(trigger, props);
   },
 
-  handleDelayedShow() {
+  handleDelayedShow: function handleDelayedShow() {
+    var _this2 = this;
+
     if (this._hoverDelay != null) {
       clearTimeout(this._hoverDelay);
       this._hoverDelay = null;
       return;
     }
 
-    const delay = this.props.delayShow != null ?
-      this.props.delayShow : this.props.delay;
+    var delay = this.props.delayShow != null ? this.props.delayShow : this.props.delay;
 
     if (!delay) {
       this.show();
       return;
     }
 
-    this._hoverDelay = setTimeout(() => {
-      this._hoverDelay = null;
-      this.show();
+    this._hoverDelay = setTimeout(function () {
+      _this2._hoverDelay = null;
+      _this2.show();
     }, delay);
   },
 
-  handleDelayedHide() {
+  handleDelayedHide: function handleDelayedHide() {
+    var _this3 = this;
+
     if (this._hoverDelay != null) {
       clearTimeout(this._hoverDelay);
       this._hoverDelay = null;
       return;
     }
 
-    const delay = this.props.delayHide != null ?
-      this.props.delayHide : this.props.delay;
+    var delay = this.props.delayHide != null ? this.props.delayHide : this.props.delay;
 
     if (!delay) {
       this.hide();
       return;
     }
 
-    this._hoverDelay = setTimeout(() => {
-      this._hoverDelay = null;
-      this.hide();
+    this._hoverDelay = setTimeout(function () {
+      _this3._hoverDelay = null;
+      _this3.hide();
     }, delay);
   },
 
   // deprecated Methods
-  calcOverlayPosition() {
-    let overlay = this.props.overlay;
+  calcOverlayPosition: function calcOverlayPosition() {
+    var overlay = this.props.overlay;
 
-    deprecationWarning('OverlayTrigger.calcOverlayPosition()', 'utils/overlayPositionUtils');
+    (0, _utilsDeprecationWarning2['default'])('OverlayTrigger.calcOverlayPosition()', 'utils/overlayPositionUtils');
 
-    return position.calcOverlayPosition(
-        overlay.props.placement || this.props.placement
-      , React.findDOMNode(overlay)
-      , React.findDOMNode(this)
-      , React.findDOMNode(overlay.props.container || this.props.container)
-      , overlay.props.containerPadding || this.props.containerPadding
-    );
+    return _utilsOverlayPositionUtils2['default'].calcOverlayPosition(overlay.props.placement || this.props.placement, _react2['default'].findDOMNode(overlay), _react2['default'].findDOMNode(this), _react2['default'].findDOMNode(overlay.props.container || this.props.container), overlay.props.containerPadding || this.props.containerPadding);
   },
 
-  getPosition() {
-    deprecationWarning('OverlayTrigger.getPosition()', 'utils/overlayPositionUtils');
+  getPosition: function getPosition() {
+    (0, _utilsDeprecationWarning2['default'])('OverlayTrigger.getPosition()', 'utils/overlayPositionUtils');
 
-    let overlay = this.props.overlay;
+    var overlay = this.props.overlay;
 
-    return position.getPosition(
-        React.findDOMNode(this)
-      , React.findDOMNode(overlay.props.container || this.props.container)
-    );
+    return _utilsOverlayPositionUtils2['default'].getPosition(_react2['default'].findDOMNode(this), _react2['default'].findDOMNode(overlay.props.container || this.props.container));
   }
 
 });
@@ -294,6 +308,7 @@ const OverlayTrigger = React.createClass({
  *
  * and import this when needed.
  */
-OverlayTrigger.withContext = createContextWrapper(OverlayTrigger, 'overlay');
+OverlayTrigger.withContext = (0, _utilsCreateContextWrapper2['default'])(OverlayTrigger, 'overlay');
 
-export default OverlayTrigger;
+exports['default'] = OverlayTrigger;
+module.exports = exports['default'];

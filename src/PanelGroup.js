@@ -1,52 +1,73 @@
 /* eslint react/prop-types: [2, {ignore: "bsStyle"}] */
 /* BootstrapMixin contains `bsStyle` type validation */
 
-import React, { cloneElement } from 'react';
-import classNames from 'classnames';
+'use strict';
 
-import BootstrapMixin from './BootstrapMixin';
-import ValidComponentChildren from './utils/ValidComponentChildren';
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-const PanelGroup = React.createClass({
-  mixins: [BootstrapMixin],
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _BootstrapMixin = require('./BootstrapMixin');
+
+var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+
+var _utilsValidComponentChildren = require('./utils/ValidComponentChildren');
+
+var _utilsValidComponentChildren2 = _interopRequireDefault(_utilsValidComponentChildren);
+
+var PanelGroup = _react2['default'].createClass({
+  displayName: 'PanelGroup',
+
+  mixins: [_BootstrapMixin2['default']],
 
   propTypes: {
-    accordion: React.PropTypes.bool,
-    activeKey: React.PropTypes.any,
-    className: React.PropTypes.string,
-    children: React.PropTypes.node,
-    defaultActiveKey: React.PropTypes.any,
-    onSelect: React.PropTypes.func
+    accordion: _react2['default'].PropTypes.bool,
+    activeKey: _react2['default'].PropTypes.any,
+    className: _react2['default'].PropTypes.string,
+    children: _react2['default'].PropTypes.node,
+    defaultActiveKey: _react2['default'].PropTypes.any,
+    onSelect: _react2['default'].PropTypes.func
   },
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       bsClass: 'panel-group'
     };
   },
 
-  getInitialState() {
-    let defaultActiveKey = this.props.defaultActiveKey;
+  getInitialState: function getInitialState() {
+    var defaultActiveKey = this.props.defaultActiveKey;
 
     return {
       activeKey: defaultActiveKey
     };
   },
 
-  render() {
-    let classes = this.getBsClassSet();
-    return (
-      <div {...this.props} className={classNames(this.props.className, classes)} onSelect={null}>
-        {ValidComponentChildren.map(this.props.children, this.renderPanel)}
-      </div>
+  render: function render() {
+    var classes = this.getBsClassSet();
+    return _react2['default'].createElement(
+      'div',
+      _extends({}, this.props, { className: (0, _classnames2['default'])(this.props.className, classes), onSelect: null }),
+      _utilsValidComponentChildren2['default'].map(this.props.children, this.renderPanel)
     );
   },
 
-  renderPanel(child, index) {
-    let activeKey =
-      this.props.activeKey != null ? this.props.activeKey : this.state.activeKey;
+  renderPanel: function renderPanel(child, index) {
+    var activeKey = this.props.activeKey != null ? this.props.activeKey : this.state.activeKey;
 
-    let props = {
+    var props = {
       bsStyle: child.props.bsStyle || this.props.bsStyle,
       key: child.key ? child.key : index,
       ref: child.ref
@@ -54,22 +75,19 @@ const PanelGroup = React.createClass({
 
     if (this.props.accordion) {
       props.collapsible = true;
-      props.expanded = (child.props.eventKey === activeKey);
+      props.expanded = child.props.eventKey === activeKey;
       props.onSelect = this.handleSelect;
     }
 
-    return cloneElement(
-      child,
-      props
-    );
+    return (0, _react.cloneElement)(child, props);
   },
 
-  shouldComponentUpdate() {
+  shouldComponentUpdate: function shouldComponentUpdate() {
     // Defer any updates to this component during the `onSelect` handler.
     return !this._isChanging;
   },
 
-  handleSelect(e, key) {
+  handleSelect: function handleSelect(e, key) {
     e.preventDefault();
 
     if (this.props.onSelect) {
@@ -88,4 +106,5 @@ const PanelGroup = React.createClass({
   }
 });
 
-export default PanelGroup;
+exports['default'] = PanelGroup;
+module.exports = exports['default'];

@@ -1,52 +1,73 @@
-import React from 'react';
-import classSet from 'classnames';
-import BootstrapMixin from './BootstrapMixin';
+'use strict';
 
-const Thumbnail = React.createClass({
-  mixins: [BootstrapMixin],
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _BootstrapMixin = require('./BootstrapMixin');
+
+var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+
+var Thumbnail = _react2['default'].createClass({
+  displayName: 'Thumbnail',
+
+  mixins: [_BootstrapMixin2['default']],
 
   propTypes: {
-    alt: React.PropTypes.string,
-    href: React.PropTypes.string,
-    src: React.PropTypes.string
+    alt: _react2['default'].PropTypes.string,
+    href: _react2['default'].PropTypes.string,
+    src: _react2['default'].PropTypes.string
   },
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       bsClass: 'thumbnail'
     };
   },
 
-  render() {
-    let classes = this.getBsClassSet();
+  render: function render() {
+    var classes = this.getBsClassSet();
 
-    if(this.props.href) {
-      return (
-        <a {...this.props} href={this.props.href} className={classSet(this.props.className, classes)}>
-          <img src={this.props.src} alt={this.props.alt} />
-        </a>
+    if (this.props.href) {
+      return _react2['default'].createElement(
+        'a',
+        _extends({}, this.props, { href: this.props.href, className: (0, _classnames2['default'])(this.props.className, classes) }),
+        _react2['default'].createElement('img', { src: this.props.src, alt: this.props.alt })
       );
-    }
-    else {
-      if(this.props.children) {
-        return (
-          <div {...this.props} className={classSet(this.props.className, classes)}>
-            <img src={this.props.src} alt={this.props.alt} />
-            <div className="caption">
-              {this.props.children}
-            </div>
-          </div>
+    } else {
+      if (this.props.children) {
+        return _react2['default'].createElement(
+          'div',
+          _extends({}, this.props, { className: (0, _classnames2['default'])(this.props.className, classes) }),
+          _react2['default'].createElement('img', { src: this.props.src, alt: this.props.alt }),
+          _react2['default'].createElement(
+            'div',
+            { className: 'caption' },
+            this.props.children
+          )
         );
-      }
-      else {
-        return (
-          <div {...this.props} className={classSet(this.props.className, classes)}>
-            <img src={this.props.src} alt={this.props.alt} />
-          </div>
+      } else {
+        return _react2['default'].createElement(
+          'div',
+          _extends({}, this.props, { className: (0, _classnames2['default'])(this.props.className, classes) }),
+          _react2['default'].createElement('img', { src: this.props.src, alt: this.props.alt })
         );
       }
     }
   }
 });
 
-export default Thumbnail;
+exports['default'] = Thumbnail;
+module.exports = exports['default'];

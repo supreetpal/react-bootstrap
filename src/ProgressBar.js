@@ -1,31 +1,56 @@
 /* eslint react/prop-types: [2, {ignore: "bsStyle"}] */
 /* BootstrapMixin contains `bsStyle` type validation */
 
-import React, { cloneElement, PropTypes } from 'react';
-import Interpolate from './Interpolate';
-import BootstrapMixin from './BootstrapMixin';
-import classNames from 'classnames';
+'use strict';
 
-import ValidComponentChildren from './utils/ValidComponentChildren';
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-const ProgressBar = React.createClass({
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Interpolate = require('./Interpolate');
+
+var _Interpolate2 = _interopRequireDefault(_Interpolate);
+
+var _BootstrapMixin = require('./BootstrapMixin');
+
+var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _utilsValidComponentChildren = require('./utils/ValidComponentChildren');
+
+var _utilsValidComponentChildren2 = _interopRequireDefault(_utilsValidComponentChildren);
+
+var ProgressBar = _react2['default'].createClass({
+  displayName: 'ProgressBar',
+
   propTypes: {
-    min: PropTypes.number,
-    now: PropTypes.number,
-    max: PropTypes.number,
-    label: PropTypes.node,
-    srOnly: PropTypes.bool,
-    striped: PropTypes.bool,
-    active: PropTypes.bool,
+    min: _react.PropTypes.number,
+    now: _react.PropTypes.number,
+    max: _react.PropTypes.number,
+    label: _react.PropTypes.node,
+    srOnly: _react.PropTypes.bool,
+    striped: _react.PropTypes.bool,
+    active: _react.PropTypes.bool,
     children: onlyProgressBar,
-    className: React.PropTypes.string,
-    interpolateClass: PropTypes.node,
-    isChild: PropTypes.bool
+    className: _react2['default'].PropTypes.string,
+    interpolateClass: _react.PropTypes.node,
+    isChild: _react.PropTypes.bool
   },
 
-  mixins: [BootstrapMixin],
+  mixins: [_BootstrapMixin2['default']],
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       bsClass: 'progress-bar',
       min: 0,
@@ -33,46 +58,42 @@ const ProgressBar = React.createClass({
     };
   },
 
-  getPercentage(now, min, max) {
-    const roundPrecision = 1000;
-    return Math.round(((now - min) / (max - min) * 100) * roundPrecision) / roundPrecision;
+  getPercentage: function getPercentage(now, min, max) {
+    var roundPrecision = 1000;
+    return Math.round((now - min) / (max - min) * 100 * roundPrecision) / roundPrecision;
   },
 
-  render() {
+  render: function render() {
     if (this.props.isChild) {
       return this.renderProgressBar();
     }
 
-    let content;
+    var content = undefined;
 
     if (this.props.children) {
-      content = ValidComponentChildren.map(this.props.children, this.renderChildBar);
+      content = _utilsValidComponentChildren2['default'].map(this.props.children, this.renderChildBar);
     } else {
       content = this.renderProgressBar();
     }
 
-    return (
-      <div {...this.props} className={classNames(this.props.className, 'progress')}>
-        {content}
-      </div>
+    return _react2['default'].createElement(
+      'div',
+      _extends({}, this.props, { className: (0, _classnames2['default'])(this.props.className, 'progress') }),
+      content
     );
   },
 
-  renderChildBar(child, index) {
-    return cloneElement(child, {
+  renderChildBar: function renderChildBar(child, index) {
+    return (0, _react.cloneElement)(child, {
       isChild: true,
       key: child.key ? child.key : index
     });
   },
 
-  renderProgressBar() {
-    const percentage = this.getPercentage(
-      this.props.now,
-      this.props.min,
-      this.props.max
-    );
+  renderProgressBar: function renderProgressBar() {
+    var percentage = this.getPercentage(this.props.now, this.props.min, this.props.max);
 
-    let label;
+    var label = undefined;
 
     if (typeof this.props.label === 'string') {
       label = this.renderLabel(percentage);
@@ -81,44 +102,43 @@ const ProgressBar = React.createClass({
     }
 
     if (this.props.srOnly) {
-      label = (
-        <span className="sr-only">
-          {label}
-        </span>
+      label = _react2['default'].createElement(
+        'span',
+        { className: 'sr-only' },
+        label
       );
     }
 
-    const classes = classNames(this.props.className, this.getBsClassSet(), {
+    var classes = (0, _classnames2['default'])(this.props.className, this.getBsClassSet(), {
       active: this.props.active,
       'progress-bar-striped': this.props.active || this.props.striped
     });
 
-    return (
-      <div
-        {...this.props}
-        className={classes}
-        role="progressbar"
-        style={{width: percentage + '%'}}
-        aria-valuenow={this.props.now}
-        aria-valuemin={this.props.min}
-        aria-valuemax={this.props.max}>
-        {label}
-      </div>
+    return _react2['default'].createElement(
+      'div',
+      _extends({}, this.props, {
+        className: classes,
+        role: 'progressbar',
+        style: { width: percentage + '%' },
+        'aria-valuenow': this.props.now,
+        'aria-valuemin': this.props.min,
+        'aria-valuemax': this.props.max }),
+      label
     );
   },
 
-  renderLabel(percentage) {
-    const InterpolateClass = this.props.interpolateClass || Interpolate;
+  renderLabel: function renderLabel(percentage) {
+    var InterpolateClass = this.props.interpolateClass || _Interpolate2['default'];
 
-    return (
-      <InterpolateClass
-        now={this.props.now}
-        min={this.props.min}
-        max={this.props.max}
-        percent={percentage}
-        bsStyle={this.props.bsStyle}>
-        {this.props.label}
-      </InterpolateClass>
+    return _react2['default'].createElement(
+      InterpolateClass,
+      {
+        now: this.props.now,
+        min: this.props.min,
+        max: this.props.max,
+        percent: percentage,
+        bsStyle: this.props.bsStyle },
+      this.props.label
     );
   }
 });
@@ -128,17 +148,25 @@ const ProgressBar = React.createClass({
  */
 function onlyProgressBar(props, propName, componentName) {
   if (props[propName]) {
-    let error, childIdentifier;
+    var _ret = (function () {
+      var error = undefined,
+          childIdentifier = undefined;
 
-    React.Children.forEach(props[propName], (child) => {
-      if (child.type !== ProgressBar) {
-        childIdentifier = (child.type.displayName ? child.type.displayName : child.type);
-        error = new Error(`Children of ${componentName} can contain only ProgressBar components. Found ${childIdentifier}`);
-      }
-    });
+      _react2['default'].Children.forEach(props[propName], function (child) {
+        if (child.type !== ProgressBar) {
+          childIdentifier = child.type.displayName ? child.type.displayName : child.type;
+          error = new Error('Children of ' + componentName + ' can contain only ProgressBar components. Found ' + childIdentifier);
+        }
+      });
 
-    return error;
+      return {
+        v: error
+      };
+    })();
+
+    if (typeof _ret === 'object') return _ret.v;
   }
 }
 
-export default ProgressBar;
+exports['default'] = ProgressBar;
+module.exports = exports['default'];

@@ -1,43 +1,56 @@
-import domUtils from './domUtils';
+'use strict';
 
-const utils = {
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-  getContainerDimensions(containerNode) {
-    let width, height, scroll;
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _domUtils = require('./domUtils');
+
+var _domUtils2 = _interopRequireDefault(_domUtils);
+
+var utils = {
+
+  getContainerDimensions: function getContainerDimensions(containerNode) {
+    var width = undefined,
+        height = undefined,
+        scroll = undefined;
 
     if (containerNode.tagName === 'BODY') {
       width = window.innerWidth;
       height = window.innerHeight;
-      scroll =
-        domUtils.ownerDocument(containerNode).documentElement.scrollTop ||
-        containerNode.scrollTop;
+      scroll = _domUtils2['default'].ownerDocument(containerNode).documentElement.scrollTop || containerNode.scrollTop;
     } else {
       width = containerNode.offsetWidth;
       height = containerNode.offsetHeight;
       scroll = containerNode.scrollTop;
     }
 
-    return {width, height, scroll};
+    return { width: width, height: height, scroll: scroll };
   },
 
-  getPosition(target, container) {
-    const offset = container.tagName === 'BODY' ?
-      domUtils.getOffset(target) : domUtils.getPosition(target, container);
+  getPosition: function getPosition(target, container) {
+    var offset = container.tagName === 'BODY' ? _domUtils2['default'].getOffset(target) : _domUtils2['default'].getPosition(target, container);
 
-    return {
-      ...offset, // eslint-disable-line object-shorthand
+    return _extends({}, offset, { // eslint-disable-line object-shorthand
       height: target.offsetHeight,
       width: target.offsetWidth
-    };
+    });
   },
 
-  calcOverlayPosition(placement, overlayNode, target, container, padding) {
-    const childOffset = utils.getPosition(target, container);
+  calcOverlayPosition: function calcOverlayPosition(placement, overlayNode, target, container, padding) {
+    var childOffset = utils.getPosition(target, container);
 
-    const overlayHeight = overlayNode.offsetHeight;
-    const overlayWidth = overlayNode.offsetWidth;
+    var overlayHeight = overlayNode.offsetHeight;
+    var overlayWidth = overlayNode.offsetWidth;
 
-    let positionLeft, positionTop, arrowOffsetLeft, arrowOffsetTop;
+    var positionLeft = undefined,
+        positionTop = undefined,
+        arrowOffsetLeft = undefined,
+        arrowOffsetTop = undefined;
 
     if (placement === 'left' || placement === 'right') {
       positionTop = childOffset.top + (childOffset.height - overlayHeight) / 2;
@@ -48,12 +61,11 @@ const utils = {
         positionLeft = childOffset.left + childOffset.width;
       }
 
-      const topDelta = getTopDelta(positionTop, overlayHeight, container, padding);
+      var topDelta = getTopDelta(positionTop, overlayHeight, container, padding);
 
       positionTop += topDelta;
       arrowOffsetTop = 50 * (1 - 2 * topDelta / overlayHeight) + '%';
       arrowOffsetLeft = null;
-
     } else if (placement === 'top' || placement === 'bottom') {
       positionLeft = childOffset.left + (childOffset.width - overlayWidth) / 2;
 
@@ -63,28 +75,25 @@ const utils = {
         positionTop = childOffset.top + childOffset.height;
       }
 
-      const leftDelta = getLeftDelta(positionLeft, overlayWidth, container, padding);
+      var leftDelta = getLeftDelta(positionLeft, overlayWidth, container, padding);
       positionLeft += leftDelta;
       arrowOffsetLeft = 50 * (1 - 2 * leftDelta / overlayWidth) + '%';
       arrowOffsetTop = null;
     } else {
-      throw new Error(
-        `calcOverlayPosition(): No such placement of "${placement }" found.`
-      );
+      throw new Error('calcOverlayPosition(): No such placement of "' + placement + '" found.');
     }
 
-    return { positionLeft, positionTop, arrowOffsetLeft, arrowOffsetTop };
+    return { positionLeft: positionLeft, positionTop: positionTop, arrowOffsetLeft: arrowOffsetLeft, arrowOffsetTop: arrowOffsetTop };
   }
 };
 
-
 function getTopDelta(top, overlayHeight, container, padding) {
-  const containerDimensions = utils.getContainerDimensions(container);
-  const containerScroll = containerDimensions.scroll;
-  const containerHeight = containerDimensions.height;
+  var containerDimensions = utils.getContainerDimensions(container);
+  var containerScroll = containerDimensions.scroll;
+  var containerHeight = containerDimensions.height;
 
-  const topEdgeOffset = top - padding - containerScroll;
-  const bottomEdgeOffset = top + padding - containerScroll + overlayHeight;
+  var topEdgeOffset = top - padding - containerScroll;
+  var bottomEdgeOffset = top + padding - containerScroll + overlayHeight;
 
   if (topEdgeOffset < 0) {
     return -topEdgeOffset;
@@ -96,11 +105,11 @@ function getTopDelta(top, overlayHeight, container, padding) {
 }
 
 function getLeftDelta(left, overlayWidth, container, padding) {
-  const containerDimensions = utils.getContainerDimensions(container);
-  const containerWidth = containerDimensions.width;
+  var containerDimensions = utils.getContainerDimensions(container);
+  var containerWidth = containerDimensions.width;
 
-  const leftEdgeOffset = left - padding;
-  const rightEdgeOffset = left + padding + overlayWidth;
+  var leftEdgeOffset = left - padding;
+  var rightEdgeOffset = left + padding + overlayWidth;
 
   if (leftEdgeOffset < 0) {
     return -leftEdgeOffset;
@@ -110,4 +119,5 @@ function getLeftDelta(left, overlayWidth, container, padding) {
     return 0;
   }
 }
-export default utils;
+exports['default'] = utils;
+module.exports = exports['default'];

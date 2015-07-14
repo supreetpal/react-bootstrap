@@ -1,12 +1,16 @@
-import React from 'react';
+'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-let canUseDom = !!(
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.createElement
-);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var canUseDom = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 /**
  * Get elements owner document
@@ -15,23 +19,21 @@ let canUseDom = !!(
  * @returns {HTMLElement}
  */
 function ownerDocument(componentOrElement) {
-  let elem = React.findDOMNode(componentOrElement);
-  return (elem && elem.ownerDocument) || document;
+  var elem = _react2['default'].findDOMNode(componentOrElement);
+  return elem && elem.ownerDocument || document;
 }
 
 function ownerWindow(componentOrElement) {
-  let doc = ownerDocument(componentOrElement);
-  return doc.defaultView
-       ? doc.defaultView
-       : doc.parentWindow;
+  var doc = ownerDocument(componentOrElement);
+  return doc.defaultView ? doc.defaultView : doc.parentWindow;
 }
 
 /**
  * get the active element, safe in IE
  * @return {HTMLElement}
  */
-function getActiveElement(componentOrElement){
-  let doc = ownerDocument(componentOrElement);
+function getActiveElement(componentOrElement) {
+  var doc = ownerDocument(componentOrElement);
 
   try {
     return doc.activeElement || doc.body;
@@ -63,12 +65,12 @@ function getOffset(DOMNode) {
     return window.jQuery(DOMNode).offset();
   }
 
-  let docElem = ownerDocument(DOMNode).documentElement;
-  let box = { top: 0, left: 0 };
+  var docElem = ownerDocument(DOMNode).documentElement;
+  var box = { top: 0, left: 0 };
 
   // If we don't have gBCR, just use 0,0 rather than error
   // BlackBerry 5, iOS 3 (original iPhone)
-  if ( typeof DOMNode.getBoundingClientRect !== 'undefined' ) {
+  if (typeof DOMNode.getBoundingClientRect !== 'undefined') {
     box = DOMNode.getBoundingClientRect();
   }
 
@@ -88,8 +90,8 @@ function getOffset(DOMNode) {
  * @returns {{top: number, left: number}}
  */
 function getPosition(elem, offsetParent) {
-  let offset,
-      parentOffset;
+  var offset = undefined,
+      parentOffset = undefined;
 
   if (window.jQuery) {
     if (!offsetParent) {
@@ -106,13 +108,12 @@ function getPosition(elem, offsetParent) {
     };
   }
 
-  parentOffset = {top: 0, left: 0};
+  parentOffset = { top: 0, left: 0 };
 
   // Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is its only offset parent
-  if (getComputedStyles(elem).position === 'fixed' ) {
+  if (getComputedStyles(elem).position === 'fixed') {
     // We assume that getBoundingClientRect is available when computed position is fixed
     offset = elem.getBoundingClientRect();
-
   } else {
     if (!offsetParent) {
       // Get *real* offsetParent
@@ -121,7 +122,7 @@ function getPosition(elem, offsetParent) {
 
     // Get correct offsets
     offset = getOffset(elem);
-    if ( offsetParent.nodeName !== 'HTML') {
+    if (offsetParent.nodeName !== 'HTML') {
       parentOffset = getOffset(offsetParent);
     }
 
@@ -144,11 +145,10 @@ function getPosition(elem, offsetParent) {
  * @returns {HTMLElement}
  */
 function offsetParentFunc(elem) {
-  let docElem = ownerDocument(elem).documentElement;
-  let offsetParent = elem.offsetParent || docElem;
+  var docElem = ownerDocument(elem).documentElement;
+  var offsetParent = elem.offsetParent || docElem;
 
-  while ( offsetParent && ( offsetParent.nodeName !== 'HTML' &&
-    getComputedStyles(offsetParent).position === 'static' ) ) {
+  while (offsetParent && (offsetParent.nodeName !== 'HTML' && getComputedStyles(offsetParent).position === 'static')) {
     offsetParent = offsetParent.offsetParent;
   }
 
@@ -161,7 +161,7 @@ function offsetParentFunc(elem) {
  * @param  {HTMLElement} inner
  * @return {bool}
  */
-function contains(elem, inner){
+function contains(elem, inner) {
   function ie8Contains(root, node) {
     while (node) {
       if (node === root) {
@@ -172,21 +172,18 @@ function contains(elem, inner){
     return false;
   }
 
-  return (elem && elem.contains)
-      ? elem.contains(inner)
-      : (elem && elem.compareDocumentPosition)
-          ? elem === inner || !!(elem.compareDocumentPosition(inner) & 16)
-          : ie8Contains(elem, inner);
+  return elem && elem.contains ? elem.contains(inner) : elem && elem.compareDocumentPosition ? elem === inner || !!(elem.compareDocumentPosition(inner) & 16) : ie8Contains(elem, inner);
 }
 
-export default {
-  canUseDom,
-  contains,
-  ownerWindow,
-  ownerDocument,
-  getComputedStyles,
-  getOffset,
-  getPosition,
+exports['default'] = {
+  canUseDom: canUseDom,
+  contains: contains,
+  ownerWindow: ownerWindow,
+  ownerDocument: ownerDocument,
+  getComputedStyles: getComputedStyles,
+  getOffset: getOffset,
+  getPosition: getPosition,
   activeElement: getActiveElement,
   offsetParent: offsetParentFunc
 };
+module.exports = exports['default'];

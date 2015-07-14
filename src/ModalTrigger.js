@@ -1,89 +1,107 @@
-import React, { cloneElement } from 'react';
-import CustomPropTypes from './utils/CustomPropTypes';
-import deprecationWarning from './utils/deprecationWarning';
+'use strict';
 
-import createChainedFunction from './utils/createChainedFunction';
-import createContextWrapper from './utils/createContextWrapper';
-import { OverlayMixin } from './OverlayMixin';
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-function createHideDepreciationWrapper(hide){
-  return function(...args){
-    deprecationWarning(
-        'The Modal prop `onRequestHide`', 'the `onHide` prop');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-    return hide(...args);
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _utilsCustomPropTypes = require('./utils/CustomPropTypes');
+
+var _utilsCustomPropTypes2 = _interopRequireDefault(_utilsCustomPropTypes);
+
+var _utilsDeprecationWarning = require('./utils/deprecationWarning');
+
+var _utilsDeprecationWarning2 = _interopRequireDefault(_utilsDeprecationWarning);
+
+var _utilsCreateChainedFunction = require('./utils/createChainedFunction');
+
+var _utilsCreateChainedFunction2 = _interopRequireDefault(_utilsCreateChainedFunction);
+
+var _utilsCreateContextWrapper = require('./utils/createContextWrapper');
+
+var _utilsCreateContextWrapper2 = _interopRequireDefault(_utilsCreateContextWrapper);
+
+var _OverlayMixin = require('./OverlayMixin');
+
+function createHideDepreciationWrapper(hide) {
+  return function () {
+    (0, _utilsDeprecationWarning2['default'])('The Modal prop `onRequestHide`', 'the `onHide` prop');
+
+    return hide.apply(undefined, arguments);
   };
 }
 
-const ModalTrigger = React.createClass({
+var ModalTrigger = _react2['default'].createClass({
+  displayName: 'ModalTrigger',
 
-  mixins: [ OverlayMixin ],
+  mixins: [_OverlayMixin.OverlayMixin],
 
   propTypes: {
-    modal: React.PropTypes.node.isRequired,
+    modal: _react2['default'].PropTypes.node.isRequired,
     /**
      * The DOM Node that the Component will render it's children into
      */
-    container: CustomPropTypes.mountable,
-    onBlur: React.PropTypes.func,
-    onFocus: React.PropTypes.func,
-    onMouseOut: React.PropTypes.func,
-    onMouseOver: React.PropTypes.func
+    container: _utilsCustomPropTypes2['default'].mountable,
+    onBlur: _react2['default'].PropTypes.func,
+    onFocus: _react2['default'].PropTypes.func,
+    onMouseOut: _react2['default'].PropTypes.func,
+    onMouseOver: _react2['default'].PropTypes.func
   },
 
-
-  getInitialState() {
+  getInitialState: function getInitialState() {
     return {
       isOverlayShown: false
     };
   },
 
-  show() {
+  show: function show() {
     this.setState({
       isOverlayShown: true
     });
   },
 
-  hide() {
+  hide: function hide() {
     this.setState({
       isOverlayShown: false
     });
   },
 
-  toggle() {
+  toggle: function toggle() {
     this.setState({
       isOverlayShown: !this.state.isOverlayShown
     });
   },
 
-  renderOverlay() {
-    let modal = this.props.modal;
+  renderOverlay: function renderOverlay() {
+    var modal = this.props.modal;
 
     if (!this.state.isOverlayShown) {
-      return <span />;
+      return _react2['default'].createElement('span', null);
     }
 
-    return cloneElement(
-      modal,
-      {
-        onHide: this.hide,
-        onRequestHide: createHideDepreciationWrapper(this.hide),
-        __isUsedInModalTrigger: true
-      }
-    );
+    return (0, _react.cloneElement)(modal, {
+      onHide: this.hide,
+      onRequestHide: createHideDepreciationWrapper(this.hide),
+      __isUsedInModalTrigger: true
+    });
   },
 
-  render() {
-    let child = React.Children.only(this.props.children);
-    let props = {};
+  render: function render() {
+    var child = _react2['default'].Children.only(this.props.children);
+    var props = {};
 
-    props.onClick = createChainedFunction(child.props.onClick, this.toggle);
-    props.onMouseOver = createChainedFunction(child.props.onMouseOver, this.props.onMouseOver);
-    props.onMouseOut = createChainedFunction(child.props.onMouseOut, this.props.onMouseOut);
-    props.onFocus = createChainedFunction(child.props.onFocus, this.props.onFocus);
-    props.onBlur = createChainedFunction(child.props.onBlur, this.props.onBlur);
+    props.onClick = (0, _utilsCreateChainedFunction2['default'])(child.props.onClick, this.toggle);
+    props.onMouseOver = (0, _utilsCreateChainedFunction2['default'])(child.props.onMouseOver, this.props.onMouseOver);
+    props.onMouseOut = (0, _utilsCreateChainedFunction2['default'])(child.props.onMouseOut, this.props.onMouseOut);
+    props.onFocus = (0, _utilsCreateChainedFunction2['default'])(child.props.onFocus, this.props.onFocus);
+    props.onBlur = (0, _utilsCreateChainedFunction2['default'])(child.props.onBlur, this.props.onBlur);
 
-    return cloneElement(child, props);
+    return (0, _react.cloneElement)(child, props);
   }
 });
 
@@ -101,21 +119,22 @@ const ModalTrigger = React.createClass({
  *
  * and import this when needed.
  */
-ModalTrigger.withContext = createContextWrapper(ModalTrigger, 'modal');
+ModalTrigger.withContext = (0, _utilsCreateContextWrapper2['default'])(ModalTrigger, 'modal');
 
-let DepreciatedModalTrigger = React.createClass({
-  componentWillMount(){
-    deprecationWarning(
-        'The `ModalTrigger` component', 'the `Modal` component directly'
-      , 'http://react-bootstrap.github.io/components.html#modals');
+var DepreciatedModalTrigger = _react2['default'].createClass({
+  displayName: 'DepreciatedModalTrigger',
+
+  componentWillMount: function componentWillMount() {
+    (0, _utilsDeprecationWarning2['default'])('The `ModalTrigger` component', 'the `Modal` component directly', 'http://react-bootstrap.github.io/components.html#modals');
   },
 
-  render(){
-    return (<ModalTrigger {...this.props}/>);
+  render: function render() {
+    return _react2['default'].createElement(ModalTrigger, this.props);
   }
 });
 
 DepreciatedModalTrigger.withContext = ModalTrigger.withContext;
 DepreciatedModalTrigger.ModalTrigger = ModalTrigger;
 
-export default DepreciatedModalTrigger;
+exports['default'] = DepreciatedModalTrigger;
+module.exports = exports['default'];

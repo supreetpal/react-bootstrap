@@ -1,99 +1,122 @@
-import React from 'react';
-import classNames from 'classnames';
-import BootstrapMixin from './BootstrapMixin';
-import CustomPropTypes from './utils/CustomPropTypes';
-import ButtonInput from './ButtonInput';
+'use strict';
 
-const Button = React.createClass({
-  mixins: [BootstrapMixin],
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _BootstrapMixin = require('./BootstrapMixin');
+
+var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+
+var _utilsCustomPropTypes = require('./utils/CustomPropTypes');
+
+var _utilsCustomPropTypes2 = _interopRequireDefault(_utilsCustomPropTypes);
+
+var _ButtonInput = require('./ButtonInput');
+
+var _ButtonInput2 = _interopRequireDefault(_ButtonInput);
+
+var Button = _react2['default'].createClass({
+  displayName: 'Button',
+
+  mixins: [_BootstrapMixin2['default']],
 
   propTypes: {
-    active: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    block: React.PropTypes.bool,
-    navItem: React.PropTypes.bool,
-    navDropdown: React.PropTypes.bool,
+    active: _react2['default'].PropTypes.bool,
+    disabled: _react2['default'].PropTypes.bool,
+    block: _react2['default'].PropTypes.bool,
+    navItem: _react2['default'].PropTypes.bool,
+    navDropdown: _react2['default'].PropTypes.bool,
     /**
      * You can use a custom element for this component
      */
-    componentClass: CustomPropTypes.elementType,
-    href: React.PropTypes.string,
-    target: React.PropTypes.string,
+    componentClass: _utilsCustomPropTypes2['default'].elementType,
+    href: _react2['default'].PropTypes.string,
+    target: _react2['default'].PropTypes.string,
     /**
      * Defines HTML button type Attribute
      * @type {("button"|"reset"|"submit")}
      */
-    type: React.PropTypes.oneOf(ButtonInput.types)
+    type: _react2['default'].PropTypes.oneOf(_ButtonInput2['default'].types)
   },
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       bsClass: 'button',
       bsStyle: 'default'
     };
   },
 
-  render() {
-    let classes = this.props.navDropdown ? {} : this.getBsClassSet();
-    let renderFuncName;
+  render: function render() {
+    var classes = this.props.navDropdown ? {} : this.getBsClassSet();
+    var renderFuncName = undefined;
 
-    classes = {
+    classes = _extends({
       active: this.props.active,
-      'btn-block': this.props.block,
-      ...classes
-    };
+      'btn-block': this.props.block
+    }, classes);
 
     if (this.props.navItem) {
       return this.renderNavItem(classes);
     }
 
-    renderFuncName = this.props.href || this.props.target || this.props.navDropdown ?
-      'renderAnchor' : 'renderButton';
+    renderFuncName = this.props.href || this.props.target || this.props.navDropdown ? 'renderAnchor' : 'renderButton';
 
     return this[renderFuncName](classes);
   },
 
-  renderAnchor(classes) {
+  renderAnchor: function renderAnchor(classes) {
 
-    let Component = this.props.componentClass || 'a';
-    let href = this.props.href || '#';
+    var Component = this.props.componentClass || 'a';
+    var href = this.props.href || '#';
     classes.disabled = this.props.disabled;
 
-    return (
-      <Component
-        {...this.props}
-        href={href}
-        className={classNames(this.props.className, classes)}
-        role="button">
-        {this.props.children}
-      </Component>
+    return _react2['default'].createElement(
+      Component,
+      _extends({}, this.props, {
+        href: href,
+        className: (0, _classnames2['default'])(this.props.className, classes),
+        role: 'button' }),
+      this.props.children
     );
   },
 
-  renderButton(classes) {
-    let Component = this.props.componentClass || 'button';
+  renderButton: function renderButton(classes) {
+    var Component = this.props.componentClass || 'button';
 
-    return (
-      <Component
-        {...this.props}
-        type={this.props.type || 'button'}
-        className={classNames(this.props.className, classes)}>
-        {this.props.children}
-      </Component>
+    return _react2['default'].createElement(
+      Component,
+      _extends({}, this.props, {
+        type: this.props.type || 'button',
+        className: (0, _classnames2['default'])(this.props.className, classes) }),
+      this.props.children
     );
   },
 
-  renderNavItem(classes) {
-    let liClasses = {
+  renderNavItem: function renderNavItem(classes) {
+    var liClasses = {
       active: this.props.active
     };
 
-    return (
-      <li className={classNames(liClasses)}>
-        {this.renderAnchor(classes)}
-      </li>
+    return _react2['default'].createElement(
+      'li',
+      { className: (0, _classnames2['default'])(liClasses) },
+      this.renderAnchor(classes)
     );
   }
 });
 
-export default Button;
+exports['default'] = Button;
+module.exports = exports['default'];

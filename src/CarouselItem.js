@@ -1,37 +1,57 @@
-import React from 'react';
-import classNames from 'classnames';
-import TransitionEvents from './utils/TransitionEvents';
+'use strict';
 
-const CarouselItem = React.createClass({
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _utilsTransitionEvents = require('./utils/TransitionEvents');
+
+var _utilsTransitionEvents2 = _interopRequireDefault(_utilsTransitionEvents);
+
+var CarouselItem = _react2['default'].createClass({
+  displayName: 'CarouselItem',
+
   propTypes: {
-    direction: React.PropTypes.oneOf(['prev', 'next']),
-    onAnimateOutEnd: React.PropTypes.func,
-    active: React.PropTypes.bool,
-    animateIn: React.PropTypes.bool,
-    animateOut: React.PropTypes.bool,
-    caption: React.PropTypes.node,
-    index: React.PropTypes.number
+    direction: _react2['default'].PropTypes.oneOf(['prev', 'next']),
+    onAnimateOutEnd: _react2['default'].PropTypes.func,
+    active: _react2['default'].PropTypes.bool,
+    animateIn: _react2['default'].PropTypes.bool,
+    animateOut: _react2['default'].PropTypes.bool,
+    caption: _react2['default'].PropTypes.node,
+    index: _react2['default'].PropTypes.number
   },
 
-  getInitialState() {
+  getInitialState: function getInitialState() {
     return {
       direction: null
     };
   },
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       animation: true
     };
   },
 
-  handleAnimateOutEnd() {
+  handleAnimateOutEnd: function handleAnimateOutEnd() {
     if (this.props.onAnimateOutEnd && this.isMounted()) {
       this.props.onAnimateOutEnd(this.props.index);
     }
   },
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     if (this.props.active !== nextProps.active) {
       this.setState({
         direction: null
@@ -39,12 +59,9 @@ const CarouselItem = React.createClass({
     }
   },
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate: function componentDidUpdate(prevProps) {
     if (!this.props.active && prevProps.active) {
-      TransitionEvents.addEndEventListener(
-        React.findDOMNode(this),
-        this.handleAnimateOutEnd
-      );
+      _utilsTransitionEvents2['default'].addEndEventListener(_react2['default'].findDOMNode(this), this.handleAnimateOutEnd);
     }
 
     if (this.props.active !== prevProps.active) {
@@ -52,21 +69,20 @@ const CarouselItem = React.createClass({
     }
   },
 
-  startAnimation() {
+  startAnimation: function startAnimation() {
     if (!this.isMounted()) {
       return;
     }
 
     this.setState({
-      direction: this.props.direction === 'prev' ?
-        'right' : 'left'
+      direction: this.props.direction === 'prev' ? 'right' : 'left'
     });
   },
 
-  render() {
-    let classes = {
+  render: function render() {
+    var classes = {
       item: true,
-      active: (this.props.active && !this.props.animateIn) || this.props.animateOut,
+      active: this.props.active && !this.props.animateIn || this.props.animateOut,
       next: this.props.active && this.props.animateIn && this.props.direction === 'next',
       prev: this.props.active && this.props.animateIn && this.props.direction === 'prev'
     };
@@ -75,21 +91,22 @@ const CarouselItem = React.createClass({
       classes[this.state.direction] = true;
     }
 
-    return (
-      <div {...this.props} className={classNames(this.props.className, classes)}>
-        {this.props.children}
-        {this.props.caption ? this.renderCaption() : null}
-      </div>
+    return _react2['default'].createElement(
+      'div',
+      _extends({}, this.props, { className: (0, _classnames2['default'])(this.props.className, classes) }),
+      this.props.children,
+      this.props.caption ? this.renderCaption() : null
     );
   },
 
-  renderCaption() {
-    return (
-      <div className="carousel-caption">
-        {this.props.caption}
-      </div>
+  renderCaption: function renderCaption() {
+    return _react2['default'].createElement(
+      'div',
+      { className: 'carousel-caption' },
+      this.props.caption
     );
   }
 });
 
-export default CarouselItem;
+exports['default'] = CarouselItem;
+module.exports = exports['default'];

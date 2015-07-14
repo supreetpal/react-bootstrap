@@ -1,40 +1,53 @@
-import styleMaps from './styleMaps';
-import CustomPropTypes from './utils/CustomPropTypes';
+'use strict';
 
-const BootstrapMixin = {
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _styleMaps = require('./styleMaps');
+
+var _styleMaps2 = _interopRequireDefault(_styleMaps);
+
+var _utilsCustomPropTypes = require('./utils/CustomPropTypes');
+
+var _utilsCustomPropTypes2 = _interopRequireDefault(_utilsCustomPropTypes);
+
+var BootstrapMixin = {
   propTypes: {
     /**
      * bootstrap className
      * @private
      */
-    bsClass: CustomPropTypes.keyOf(styleMaps.CLASSES),
+    bsClass: _utilsCustomPropTypes2['default'].keyOf(_styleMaps2['default'].CLASSES),
     /**
      * Style variants
      * @type {("default"|"primary"|"success"|"info"|"warning"|"danger"|"link")}
      */
-    bsStyle: CustomPropTypes.keyOf(styleMaps.STYLES),
+    bsStyle: _utilsCustomPropTypes2['default'].keyOf(_styleMaps2['default'].STYLES),
     /**
      * Size variants
      * @type {("xsmall"|"small"|"medium"|"large")}
      */
-    bsSize: CustomPropTypes.keyOf(styleMaps.SIZES)
+    bsSize: _utilsCustomPropTypes2['default'].keyOf(_styleMaps2['default'].SIZES)
   },
 
-  getBsClassSet() {
-    let classes = {};
+  getBsClassSet: function getBsClassSet() {
+    var classes = {};
 
-    let bsClass = this.props.bsClass && styleMaps.CLASSES[this.props.bsClass];
+    var bsClass = this.props.bsClass && _styleMaps2['default'].CLASSES[this.props.bsClass];
     if (bsClass) {
       classes[bsClass] = true;
 
-      let prefix = bsClass + '-';
+      var prefix = bsClass + '-';
 
-      let bsSize = this.props.bsSize && styleMaps.SIZES[this.props.bsSize];
+      var bsSize = this.props.bsSize && _styleMaps2['default'].SIZES[this.props.bsSize];
       if (bsSize) {
         classes[prefix + bsSize] = true;
       }
 
-      let bsStyle = this.props.bsStyle && styleMaps.STYLES[this.props.bsStyle];
+      var bsStyle = this.props.bsStyle && _styleMaps2['default'].STYLES[this.props.bsStyle];
       if (this.props.bsStyle) {
         classes[prefix + bsStyle] = true;
       }
@@ -43,9 +56,10 @@ const BootstrapMixin = {
     return classes;
   },
 
-  prefixClass(subClass) {
-    return styleMaps.CLASSES[this.props.bsClass] + '-' + subClass;
+  prefixClass: function prefixClass(subClass) {
+    return _styleMaps2['default'].CLASSES[this.props.bsClass] + '-' + subClass;
   }
 };
 
-export default BootstrapMixin;
+exports['default'] = BootstrapMixin;
+module.exports = exports['default'];

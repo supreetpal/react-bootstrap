@@ -1,21 +1,67 @@
 /*eslint-disable react/prop-types */
-import React, { cloneElement } from 'react';
+'use strict';
 
-import classNames from 'classnames';
-import createChainedFunction from './utils/createChainedFunction';
-import BootstrapMixin from './BootstrapMixin';
-import FadeMixin from './FadeMixin';
-import domUtils from './utils/domUtils';
-import EventListener from './utils/EventListener';
-import deprecationWarning from './utils/deprecationWarning';
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-import Portal from './Portal';
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-import Body from './ModalBody';
-import Header from './ModalHeader';
-import Title from './ModalTitle';
-import Footer from './ModalFooter';
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _utilsCreateChainedFunction = require('./utils/createChainedFunction');
+
+var _utilsCreateChainedFunction2 = _interopRequireDefault(_utilsCreateChainedFunction);
+
+var _BootstrapMixin = require('./BootstrapMixin');
+
+var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+
+var _FadeMixin = require('./FadeMixin');
+
+var _FadeMixin2 = _interopRequireDefault(_FadeMixin);
+
+var _utilsDomUtils = require('./utils/domUtils');
+
+var _utilsDomUtils2 = _interopRequireDefault(_utilsDomUtils);
+
+var _utilsEventListener = require('./utils/EventListener');
+
+var _utilsEventListener2 = _interopRequireDefault(_utilsEventListener);
+
+var _utilsDeprecationWarning = require('./utils/deprecationWarning');
+
+var _utilsDeprecationWarning2 = _interopRequireDefault(_utilsDeprecationWarning);
+
+var _Portal = require('./Portal');
+
+var _Portal2 = _interopRequireDefault(_Portal);
+
+var _ModalBody = require('./ModalBody');
+
+var _ModalBody2 = _interopRequireDefault(_ModalBody);
+
+var _ModalHeader = require('./ModalHeader');
+
+var _ModalHeader2 = _interopRequireDefault(_ModalHeader);
+
+var _ModalTitle = require('./ModalTitle');
+
+var _ModalTitle2 = _interopRequireDefault(_ModalTitle);
+
+var _ModalFooter = require('./ModalFooter');
+
+var _ModalFooter2 = _interopRequireDefault(_ModalFooter);
 
 /**
  * Gets the correct clientHeight of the modal container
@@ -25,37 +71,35 @@ import Footer from './ModalFooter';
  * @return {Number}
  */
 function containerClientHeight(container, context) {
-  let doc = domUtils.ownerDocument(context);
+  var doc = _utilsDomUtils2['default'].ownerDocument(context);
 
-  return (container === doc.body || container === doc.documentElement)
-      ? doc.documentElement.clientHeight
-      : container.clientHeight;
+  return container === doc.body || container === doc.documentElement ? doc.documentElement.clientHeight : container.clientHeight;
 }
 
-function getContainer(context){
-  return (context.props.container && React.findDOMNode(context.props.container)) ||
-    domUtils.ownerDocument(context).body;
+function getContainer(context) {
+  return context.props.container && _react2['default'].findDOMNode(context.props.container) || _utilsDomUtils2['default'].ownerDocument(context).body;
 }
 
-function requiredIfNot(key, type){
-  return function(props, propName, componentName){
-    let propType = type;
+function requiredIfNot(key, type) {
+  return function (props, propName, componentName) {
+    var propType = type;
 
-    if ( props[ key] === undefined ){
+    if (props[key] === undefined) {
       propType = propType.isRequired;
     }
     return propType(props, propName, componentName);
   };
 }
 
-function toChildArray(children){
-  let result = [];
-  React.Children.forEach(children, c => result.push(c));
+function toChildArray(children) {
+  var result = [];
+  _react2['default'].Children.forEach(children, function (c) {
+    return result.push(c);
+  });
   return result;
 }
 
-
-let currentFocusListener;
+var currentFocusListener = undefined;
 
 /**
  * Firefox doesn't have a focusin event so using capture is easiest way to get bubbling
@@ -67,35 +111,39 @@ let currentFocusListener;
  * @param  {Function} handler
  */
 function onFocus(context, handler) {
-  let doc = domUtils.ownerDocument(context);
-  let useFocusin = !doc.addEventListener;
-  let remove;
+  var doc = _utilsDomUtils2['default'].ownerDocument(context);
+  var useFocusin = !doc.addEventListener;
+  var remove = undefined;
 
-  if ( currentFocusListener ) {
+  if (currentFocusListener) {
     currentFocusListener.remove();
   }
 
   if (useFocusin) {
     document.attachEvent('onfocusin', handler);
-    remove = () => document.detachEvent('onfocusin', handler);
+    remove = function () {
+      return document.detachEvent('onfocusin', handler);
+    };
   } else {
     document.addEventListener('focus', handler, true);
-    remove = () => document.removeEventListener('focus', handler, true);
+    remove = function () {
+      return document.removeEventListener('focus', handler, true);
+    };
   }
 
-  currentFocusListener = { remove };
+  currentFocusListener = { remove: remove };
 
   return currentFocusListener;
 }
 
-let scrollbarSize;
+var scrollbarSize = undefined;
 
-function getScrollbarSize(){
-  if ( scrollbarSize !== undefined ){
+function getScrollbarSize() {
+  if (scrollbarSize !== undefined) {
     return scrollbarSize;
   }
 
-  let scrollDiv = document.createElement('div');
+  var scrollDiv = document.createElement('div');
 
   scrollDiv.style.position = 'absolute';
   scrollDiv.style.top = '-9999px';
@@ -110,69 +158,69 @@ function getScrollbarSize(){
   scrollDiv = null;
 }
 
+var ModalMarkup = _react2['default'].createClass({
+  displayName: 'ModalMarkup',
 
-const ModalMarkup = React.createClass({
-
-  mixins: [BootstrapMixin, FadeMixin],
+  mixins: [_BootstrapMixin2['default'], _FadeMixin2['default']],
 
   propTypes: {
     /**
      * The Modal title text
      * @deprecated Use the "Modal.Header" component instead
      */
-    title: React.PropTypes.node,
+    title: _react2['default'].PropTypes.node,
     /**
      * Include a backdrop component. Specify 'static' for a backdrop that doesn't trigger an "onHide" when clicked.
      */
-    backdrop: React.PropTypes.oneOf(['static', true, false]),
+    backdrop: _react2['default'].PropTypes.oneOf(['static', true, false]),
     /**
      * Include a backdrop component. Specify 'static' for a backdrop that doesn't trigger an "onHide" when clicked.
      */
-    keyboard: React.PropTypes.bool,
+    keyboard: _react2['default'].PropTypes.bool,
 
     /**
      * Specify whether the Modal heading should contain a close button
      * @deprecated Use the "Modal.Header" Component instead
      */
-    closeButton: React.PropTypes.bool,
+    closeButton: _react2['default'].PropTypes.bool,
 
     /**
      * Open and close the Modal with a slide and fade animation.
      */
-    animation: React.PropTypes.bool,
+    animation: _react2['default'].PropTypes.bool,
     /**
      * A Callback fired when the header closeButton or non-static backdrop is clicked.
      * @type {function}
      * @required
      */
-    onHide: requiredIfNot('onRequestHide', React.PropTypes.func),
+    onHide: requiredIfNot('onRequestHide', _react2['default'].PropTypes.func),
 
     /**
      * A Callback fired when the header closeButton or non-static backdrop is clicked.
      * @deprecated Replaced by `onHide`.
      */
-    onRequestHide:  React.PropTypes.func,
+    onRequestHide: _react2['default'].PropTypes.func,
 
     /**
      * A css class to apply to the Modal dialog DOM node.
      */
-    dialogClassName: React.PropTypes.string,
+    dialogClassName: _react2['default'].PropTypes.string,
 
     /**
      * When `true` The modal will automatically shift focus to itself when it opens, and replace it to the last focused element when it closes.
      * Generally this should never be set to false as it makes the Modal less accessible to assistive technologies, like screen-readers.
      */
-    autoFocus: React.PropTypes.bool,
+    autoFocus: _react2['default'].PropTypes.bool,
 
     /**
      * When `true` The modal will prevent focus from leaving the Modal while open.
      * Consider leaving the default value here, as it is necessary to make the Modal work well with assistive technologies,
      * such as screen readers.
      */
-    enforceFocus: React.PropTypes.bool
+    enforceFocus: _react2['default'].PropTypes.bool
   },
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       bsClass: 'modal',
       backdrop: true,
@@ -185,128 +233,133 @@ const ModalMarkup = React.createClass({
     };
   },
 
-  getInitialState(){
-    return { };
+  getInitialState: function getInitialState() {
+    return {};
   },
 
-  render() {
-    let state = this.state;
-    let modalStyle = { ...state.dialogStyles, display: 'block'};
-    let dialogClasses = this.getBsClassSet();
+  render: function render() {
+    var state = this.state;
+    var modalStyle = _extends({}, state.dialogStyles, { display: 'block' });
+    var dialogClasses = this.getBsClassSet();
 
     delete dialogClasses.modal;
     dialogClasses['modal-dialog'] = true;
 
-    let classes = {
+    var classes = {
       modal: true,
       fade: this.props.animation,
       'in': !this.props.animation
     };
 
-    let modal = (
-      <div
-        {...this.props}
-        title={null}
-        tabIndex="-1"
-        role="dialog"
-        style={modalStyle}
-        className={classNames(this.props.className, classes)}
-        onClick={this.props.backdrop === true ? this.handleBackdropClick : null}
-        ref="modal">
-        <div className={classNames(this.props.dialogClassName, dialogClasses)}>
-          <div className="modal-content" role='document'>
-            { this.renderContent() }
-          </div>
-        </div>
-      </div>
+    var modal = _react2['default'].createElement(
+      'div',
+      _extends({}, this.props, {
+        title: null,
+        tabIndex: '-1',
+        role: 'dialog',
+        style: modalStyle,
+        className: (0, _classnames2['default'])(this.props.className, classes),
+        onClick: this.props.backdrop === true ? this.handleBackdropClick : null,
+        ref: 'modal' }),
+      _react2['default'].createElement(
+        'div',
+        { className: (0, _classnames2['default'])(this.props.dialogClassName, dialogClasses) },
+        _react2['default'].createElement(
+          'div',
+          { className: 'modal-content', role: 'document' },
+          this.renderContent()
+        )
+      )
     );
 
-    return this.props.backdrop ?
-      this.renderBackdrop(modal, state.backdropStyles) : modal;
+    return this.props.backdrop ? this.renderBackdrop(modal, state.backdropStyles) : modal;
   },
 
-  renderContent() {
-    let children = toChildArray(this.props.children); // b/c createFragment is in addons and children can be a key'd object
-    let hasNewHeader = children.some( c => c.type.__isModalHeader);
+  renderContent: function renderContent() {
+    var _this = this;
 
-    if (!hasNewHeader && this.props.title != null){
-      deprecationWarning(
-        'Specifying `closeButton` or `title` Modal props',
-        'the new Modal.Header, and Modal.Title components');
+    var children = toChildArray(this.props.children); // b/c createFragment is in addons and children can be a key'd object
+    var hasNewHeader = children.some(function (c) {
+      return c.type.__isModalHeader;
+    });
 
-      children.unshift(
-        <Header closeButton={this.props.closeButton} onHide={this._getHide()}>
-          { this.props.title &&
-            <Title>{this.props.title}</Title>
-          }
-        </Header>
-      );
+    if (!hasNewHeader && this.props.title != null) {
+      (0, _utilsDeprecationWarning2['default'])('Specifying `closeButton` or `title` Modal props', 'the new Modal.Header, and Modal.Title components');
+
+      children.unshift(_react2['default'].createElement(
+        _ModalHeader2['default'],
+        { closeButton: this.props.closeButton, onHide: this._getHide() },
+        this.props.title && _react2['default'].createElement(
+          _ModalTitle2['default'],
+          null,
+          this.props.title
+        )
+      ));
     }
 
-    return React.Children.map(children, child => {
+    return _react2['default'].Children.map(children, function (child) {
       // TODO: use context in 0.14
       if (child.type.__isModalHeader) {
-        return cloneElement(child, {
-          onHide: createChainedFunction(this._getHide(), child.props.onHide)
+        return (0, _react.cloneElement)(child, {
+          onHide: (0, _utilsCreateChainedFunction2['default'])(_this._getHide(), child.props.onHide)
         });
       }
       return child;
     });
   },
 
-  renderBackdrop(modal) {
-    let classes = {
+  renderBackdrop: function renderBackdrop(modal) {
+    var classes = {
       'modal-backdrop': true,
       fade: this.props.animation,
       'in': !this.props.animation
     };
 
-    let onClick = this.props.backdrop === true ?
-      this.handleBackdropClick : null;
+    var onClick = this.props.backdrop === true ? this.handleBackdropClick : null;
 
-    return (
-      <div>
-        <div className={classNames(classes)} ref="backdrop" onClick={onClick} />
-        {modal}
-      </div>
+    return _react2['default'].createElement(
+      'div',
+      null,
+      _react2['default'].createElement('div', { className: (0, _classnames2['default'])(classes), ref: 'backdrop', onClick: onClick }),
+      modal
     );
   },
 
-  _getHide(){
-    if ( !this.props.onHide && this.props.onRequestHide){
-      deprecationWarning('The Modal prop `onRequestHide`', 'the `onHide` prop');
+  _getHide: function _getHide() {
+    if (!this.props.onHide && this.props.onRequestHide) {
+      (0, _utilsDeprecationWarning2['default'])('The Modal prop `onRequestHide`', 'the `onHide` prop');
     }
 
     return this.props.onHide || this.props.onRequestHide;
   },
 
-  iosClickHack() {
+  iosClickHack: function iosClickHack() {
     // IOS only allows click events to be delegated to the document on elements
     // it considers 'clickable' - anchors, buttons, etc. We fake a click handler on the
     // DOM nodes themselves. Remove if handled by React: https://github.com/facebook/react/issues/1169
-    React.findDOMNode(this.refs.modal).onclick = function () {};
-    React.findDOMNode(this.refs.backdrop).onclick = function () {};
+    _react2['default'].findDOMNode(this.refs.modal).onclick = function () {};
+    _react2['default'].findDOMNode(this.refs.backdrop).onclick = function () {};
   },
 
-  componentWillMount(){
+  componentWillMount: function componentWillMount() {
     this.checkForFocus();
   },
 
-  componentDidMount() {
-    const doc = domUtils.ownerDocument(this);
-    const win = domUtils.ownerWindow(this);
+  componentDidMount: function componentDidMount() {
+    var _this2 = this;
 
-    this._onDocumentKeyupListener =
-      EventListener.listen(doc, 'keyup', this.handleDocumentKeyUp);
+    var doc = _utilsDomUtils2['default'].ownerDocument(this);
+    var win = _utilsDomUtils2['default'].ownerWindow(this);
 
-    this._onWindowResizeListener =
-        EventListener.listen(win, 'resize', this.handleWindowResize);
+    this._onDocumentKeyupListener = _utilsEventListener2['default'].listen(doc, 'keyup', this.handleDocumentKeyUp);
+
+    this._onWindowResizeListener = _utilsEventListener2['default'].listen(win, 'resize', this.handleWindowResize);
 
     if (this.props.enforceFocus) {
       this._onFocusinListener = onFocus(this, this.enforceFocus);
     }
 
-    let container = getContainer(this);
+    var container = getContainer(this);
 
     container.className += container.className.length ? ' modal-open' : 'modal-open';
 
@@ -322,23 +375,25 @@ const ModalMarkup = React.createClass({
       this.iosClickHack();
     }
 
-    this.setState(this._getStyles() //eslint-disable-line react/no-did-mount-set-state
-      , () => this.focusModalContent());
+    this.setState(this._getStyles(), //eslint-disable-line react/no-did-mount-set-state
+    function () {
+      return _this2.focusModalContent();
+    });
   },
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate: function componentDidUpdate(prevProps) {
     if (this.props.backdrop && this.props.backdrop !== prevProps.backdrop) {
       this.iosClickHack();
       this.setState(this._getStyles()); //eslint-disable-line react/no-did-update-set-state
     }
 
     if (this.props.container !== prevProps.container) {
-      let container = getContainer(this);
+      var container = getContainer(this);
       this._containerIsOverflowing = container.scrollHeight > containerClientHeight(container, this);
     }
   },
 
-  componentWillUnmount() {
+  componentWillUnmount: function componentWillUnmount() {
     this._onDocumentKeyupListener.remove();
     this._onWindowResizeListener.remove();
 
@@ -346,7 +401,7 @@ const ModalMarkup = React.createClass({
       this._onFocusinListener.remove();
     }
 
-    let container = getContainer(this);
+    var container = getContainer(this);
 
     container.style.paddingRight = this._originalPadding;
 
@@ -355,7 +410,7 @@ const ModalMarkup = React.createClass({
     this.restoreLastFocus();
   },
 
-  handleBackdropClick(e) {
+  handleBackdropClick: function handleBackdropClick(e) {
     if (e.target !== e.currentTarget) {
       return;
     }
@@ -363,29 +418,28 @@ const ModalMarkup = React.createClass({
     this._getHide()();
   },
 
-  handleDocumentKeyUp(e) {
+  handleDocumentKeyUp: function handleDocumentKeyUp(e) {
     if (this.props.keyboard && e.keyCode === 27) {
       this._getHide()();
     }
   },
 
-  handleWindowResize() {
+  handleWindowResize: function handleWindowResize() {
     this.setState(this._getStyles());
   },
 
-  checkForFocus(){
-    if ( domUtils.canUseDom ) {
+  checkForFocus: function checkForFocus() {
+    if (_utilsDomUtils2['default'].canUseDom) {
       try {
         this.lastFocus = document.activeElement;
-      }
-      catch (e) {} // eslint-disable-line no-empty
+      } catch (e) {} // eslint-disable-line no-empty
     }
   },
 
-  focusModalContent () {
-    let modalContent = React.findDOMNode(this.refs.modal);
-    let current = domUtils.activeElement(this);
-    let focusInModal = current && domUtils.contains(modalContent, current);
+  focusModalContent: function focusModalContent() {
+    var modalContent = _react2['default'].findDOMNode(this.refs.modal);
+    var current = _utilsDomUtils2['default'].activeElement(this);
+    var focusInModal = current && _utilsDomUtils2['default'].contains(modalContent, current);
 
     if (this.props.autoFocus && !focusInModal) {
       this.lastFocus = current;
@@ -394,66 +448,72 @@ const ModalMarkup = React.createClass({
     }
   },
 
-  restoreLastFocus () {
+  restoreLastFocus: function restoreLastFocus() {
     if (this.lastFocus) {
       this.lastFocus.focus();
       this.lastFocus = null;
     }
   },
 
-  enforceFocus() {
-    if ( !this.isMounted() ) {
+  enforceFocus: function enforceFocus() {
+    if (!this.isMounted()) {
       return;
     }
 
-    let active = domUtils.activeElement(this);
-    let modal = React.findDOMNode(this.refs.modal);
+    var active = _utilsDomUtils2['default'].activeElement(this);
+    var modal = _react2['default'].findDOMNode(this.refs.modal);
 
-    if (modal !== active && !domUtils.contains(modal, active)){
+    if (modal !== active && !_utilsDomUtils2['default'].contains(modal, active)) {
       modal.focus();
     }
   },
 
-  _getStyles() {
-    if ( !domUtils.canUseDom ) { return {}; }
+  _getStyles: function _getStyles() {
+    if (!_utilsDomUtils2['default'].canUseDom) {
+      return {};
+    }
 
-    let node = React.findDOMNode(this.refs.modal);
-    let scrollHt = node.scrollHeight;
-    let container = getContainer(this);
-    let containerIsOverflowing = this._containerIsOverflowing;
-    let modalIsOverflowing = scrollHt > containerClientHeight(container, this);
+    var node = _react2['default'].findDOMNode(this.refs.modal);
+    var scrollHt = node.scrollHeight;
+    var container = getContainer(this);
+    var containerIsOverflowing = this._containerIsOverflowing;
+    var modalIsOverflowing = scrollHt > containerClientHeight(container, this);
 
     return {
       dialogStyles: {
         paddingRight: containerIsOverflowing && !modalIsOverflowing ? getScrollbarSize() : void 0,
-        paddingLeft:  !containerIsOverflowing && modalIsOverflowing ? getScrollbarSize() : void 0
+        paddingLeft: !containerIsOverflowing && modalIsOverflowing ? getScrollbarSize() : void 0
       }
     };
   }
 });
 
-const Modal = React.createClass({
-  propTypes: {
-    ...Portal.propTypes,
-    ...ModalMarkup.propTypes
-  },
+var Modal = _react2['default'].createClass({
+  displayName: 'Modal',
+
+  propTypes: _extends({}, _Portal2['default'].propTypes, ModalMarkup.propTypes),
 
   defaultProps: {
     show: null
   },
 
-  render() {
-    let { show, ...props } = this.props;
+  render: function render() {
+    var _props = this.props;
+    var show = _props.show;
 
-    let modal = (
-      <ModalMarkup {...props}>{this.props.children}</ModalMarkup>
+    var props = _objectWithoutProperties(_props, ['show']);
+
+    var modal = _react2['default'].createElement(
+      ModalMarkup,
+      props,
+      this.props.children
     );
     // I can't think of another way to not break back compat while defaulting container
-    if ( !this.props.__isUsedInModalTrigger && show != null ){
-      return (
-        <Portal container={props.container} >
-          { show && modal }
-        </Portal>
+    if (!this.props.__isUsedInModalTrigger && show != null) {
+      return _react2['default'].createElement(
+        _Portal2['default'],
+        { container: props.container },
+        show && modal
       );
     } else {
       return modal;
@@ -461,9 +521,10 @@ const Modal = React.createClass({
   }
 });
 
-Modal.Body = Body;
-Modal.Header = Header;
-Modal.Title = Title;
-Modal.Footer = Footer;
+Modal.Body = _ModalBody2['default'];
+Modal.Header = _ModalHeader2['default'];
+Modal.Title = _ModalTitle2['default'];
+Modal.Footer = _ModalFooter2['default'];
 
-export default Modal;
+exports['default'] = Modal;
+module.exports = exports['default'];

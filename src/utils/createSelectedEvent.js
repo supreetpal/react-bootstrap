@@ -1,15 +1,24 @@
-export default function createSelectedEvent(eventKey) {
-  let selectionPrevented = false;
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = createSelectedEvent;
+
+function createSelectedEvent(eventKey) {
+  var selectionPrevented = false;
 
   return {
-    eventKey,
+    eventKey: eventKey,
 
-    preventSelection() {
+    preventSelection: function preventSelection() {
       selectionPrevented = true;
     },
 
-    isSelectionPrevented() {
+    isSelectionPrevented: function isSelectionPrevented() {
       return selectionPrevented;
     }
   };
 }
+
+module.exports = exports["default"];

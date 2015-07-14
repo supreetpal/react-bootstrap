@@ -1,32 +1,51 @@
-import React, { cloneElement } from 'react';
-import BootstrapMixin from './BootstrapMixin';
-import classNames from 'classnames';
+'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-const ListGroupItem = React.createClass({
-  mixins: [BootstrapMixin],
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _BootstrapMixin = require('./BootstrapMixin');
+
+var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var ListGroupItem = _react2['default'].createClass({
+  displayName: 'ListGroupItem',
+
+  mixins: [_BootstrapMixin2['default']],
 
   propTypes: {
-    bsStyle: React.PropTypes.oneOf(['danger', 'info', 'success', 'warning']),
-    className: React.PropTypes.string,
-    active: React.PropTypes.any,
-    disabled: React.PropTypes.any,
-    header: React.PropTypes.node,
-    listItem: React.PropTypes.bool,
-    onClick: React.PropTypes.func,
-    eventKey: React.PropTypes.any,
-    href: React.PropTypes.string,
-    target: React.PropTypes.string
+    bsStyle: _react2['default'].PropTypes.oneOf(['danger', 'info', 'success', 'warning']),
+    className: _react2['default'].PropTypes.string,
+    active: _react2['default'].PropTypes.any,
+    disabled: _react2['default'].PropTypes.any,
+    header: _react2['default'].PropTypes.node,
+    listItem: _react2['default'].PropTypes.bool,
+    onClick: _react2['default'].PropTypes.func,
+    eventKey: _react2['default'].PropTypes.any,
+    href: _react2['default'].PropTypes.string,
+    target: _react2['default'].PropTypes.string
   },
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       bsClass: 'list-group-item'
     };
   },
 
-  render() {
-    let classes = this.getBsClassSet();
+  render: function render() {
+    var classes = this.getBsClassSet();
 
     classes.active = this.props.active;
     classes.disabled = this.props.disabled;
@@ -40,58 +59,56 @@ const ListGroupItem = React.createClass({
     }
   },
 
-  renderLi(classes) {
-    return (
-      <li
-        {...this.props} className={classNames(this.props.className, classes)}>
-        {this.props.header ? this.renderStructuredContent() : this.props.children}
-      </li>
+  renderLi: function renderLi(classes) {
+    return _react2['default'].createElement(
+      'li',
+      _extends({}, this.props, { className: (0, _classnames2['default'])(this.props.className, classes) }),
+      this.props.header ? this.renderStructuredContent() : this.props.children
     );
   },
 
-  renderAnchor(classes) {
-    return (
-      <a
-        {...this.props}
-        className={classNames(this.props.className, classes)}
-      >
-        {this.props.header ? this.renderStructuredContent() : this.props.children}
-      </a>
+  renderAnchor: function renderAnchor(classes) {
+    return _react2['default'].createElement(
+      'a',
+      _extends({}, this.props, {
+        className: (0, _classnames2['default'])(this.props.className, classes)
+      }),
+      this.props.header ? this.renderStructuredContent() : this.props.children
     );
   },
 
-  renderSpan(classes) {
-    return (
-      <span
-        {...this.props} className={classNames(this.props.className, classes)}>
-        {this.props.header ? this.renderStructuredContent() : this.props.children}
-      </span>
+  renderSpan: function renderSpan(classes) {
+    return _react2['default'].createElement(
+      'span',
+      _extends({}, this.props, { className: (0, _classnames2['default'])(this.props.className, classes) }),
+      this.props.header ? this.renderStructuredContent() : this.props.children
     );
   },
 
-  renderStructuredContent() {
-    let header;
-    if (React.isValidElement(this.props.header)) {
-      header = cloneElement(this.props.header, {
+  renderStructuredContent: function renderStructuredContent() {
+    var header = undefined;
+    if (_react2['default'].isValidElement(this.props.header)) {
+      header = (0, _react.cloneElement)(this.props.header, {
         key: 'header',
-        className: classNames(this.props.header.props.className, 'list-group-item-heading')
+        className: (0, _classnames2['default'])(this.props.header.props.className, 'list-group-item-heading')
       });
     } else {
-      header = (
-        <h4 key='header' className="list-group-item-heading">
-          {this.props.header}
-        </h4>
+      header = _react2['default'].createElement(
+        'h4',
+        { key: 'header', className: 'list-group-item-heading' },
+        this.props.header
       );
     }
 
-    let content = (
-      <p key='content' className="list-group-item-text">
-        {this.props.children}
-      </p>
+    var content = _react2['default'].createElement(
+      'p',
+      { key: 'content', className: 'list-group-item-text' },
+      this.props.children
     );
 
     return [header, content];
   }
 });
 
-export default ListGroupItem;
+exports['default'] = ListGroupItem;
+module.exports = exports['default'];

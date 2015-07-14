@@ -1,17 +1,46 @@
-import React, { cloneElement } from 'react';
-import BootstrapMixin from './BootstrapMixin';
+'use strict';
 
-import ValidComponentChildren from './utils/ValidComponentChildren';
-import Nav from './Nav';
-import NavItem from './NavItem';
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-let panelId = (props, child) => child.props.id ? child.props.id : props.id && (props.id + '___panel___' + child.props.eventKey);
-let tabId = (props, child) => child.props.id ? child.props.id + '___tab' : props.id && (props.id + '___tab___' + child.props.eventKey);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _BootstrapMixin = require('./BootstrapMixin');
+
+var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+
+var _utilsValidComponentChildren = require('./utils/ValidComponentChildren');
+
+var _utilsValidComponentChildren2 = _interopRequireDefault(_utilsValidComponentChildren);
+
+var _Nav = require('./Nav');
+
+var _Nav2 = _interopRequireDefault(_Nav);
+
+var _NavItem = require('./NavItem');
+
+var _NavItem2 = _interopRequireDefault(_NavItem);
+
+var panelId = function panelId(props, child) {
+  return child.props.id ? child.props.id : props.id && props.id + '___panel___' + child.props.eventKey;
+};
+var tabId = function tabId(props, child) {
+  return child.props.id ? child.props.id + '___tab' : props.id && props.id + '___tab___' + child.props.eventKey;
+};
 
 function getDefaultActiveKeyFromChildren(children) {
-  let defaultActiveKey;
+  var defaultActiveKey = undefined;
 
-  ValidComponentChildren.forEach(children, function(child) {
+  _utilsValidComponentChildren2['default'].forEach(children, function (child) {
     if (defaultActiveKey == null) {
       defaultActiveKey = child.props.eventKey;
     }
@@ -20,28 +49,29 @@ function getDefaultActiveKeyFromChildren(children) {
   return defaultActiveKey;
 }
 
-const TabbedArea = React.createClass({
-  mixins: [BootstrapMixin],
+var TabbedArea = _react2['default'].createClass({
+  displayName: 'TabbedArea',
+
+  mixins: [_BootstrapMixin2['default']],
 
   propTypes: {
-    activeKey: React.PropTypes.any,
-    defaultActiveKey: React.PropTypes.any,
-    bsStyle: React.PropTypes.oneOf(['tabs', 'pills']),
-    animation: React.PropTypes.bool,
-    id: React.PropTypes.string,
-    onSelect: React.PropTypes.func
+    activeKey: _react2['default'].PropTypes.any,
+    defaultActiveKey: _react2['default'].PropTypes.any,
+    bsStyle: _react2['default'].PropTypes.oneOf(['tabs', 'pills']),
+    animation: _react2['default'].PropTypes.bool,
+    id: _react2['default'].PropTypes.string,
+    onSelect: _react2['default'].PropTypes.func
   },
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       bsStyle: 'tabs',
       animation: true
     };
   },
 
-  getInitialState() {
-    let defaultActiveKey = this.props.defaultActiveKey != null ?
-      this.props.defaultActiveKey : getDefaultActiveKeyFromChildren(this.props.children);
+  getInitialState: function getInitialState() {
+    var defaultActiveKey = this.props.defaultActiveKey != null ? this.props.defaultActiveKey : getDefaultActiveKeyFromChildren(this.props.children);
 
     return {
       activeKey: defaultActiveKey,
@@ -49,7 +79,7 @@ const TabbedArea = React.createClass({
     };
   },
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     if (nextProps.activeKey != null && nextProps.activeKey !== this.props.activeKey) {
       this.setState({
         previousActiveKey: this.props.activeKey
@@ -57,84 +87,87 @@ const TabbedArea = React.createClass({
     }
   },
 
-  handlePaneAnimateOutEnd() {
+  handlePaneAnimateOutEnd: function handlePaneAnimateOutEnd() {
     this.setState({
       previousActiveKey: null
     });
   },
 
-  render() {
-    let { id, ...props } = this.props;
+  render: function render() {
+    var _props = this.props;
+    var id = _props.id;
 
-    let activeKey =
-      this.props.activeKey != null ? this.props.activeKey : this.state.activeKey;
+    var props = _objectWithoutProperties(_props, ['id']);
+
+    var activeKey = this.props.activeKey != null ? this.props.activeKey : this.state.activeKey;
 
     function renderTabIfSet(child) {
       return child.props.tab != null ? this.renderTab(child) : null;
     }
 
-    let nav = (
-      <Nav {...props} activeKey={activeKey} onSelect={this.handleSelect} ref="tabs">
-        {ValidComponentChildren.map(this.props.children, renderTabIfSet, this)}
-      </Nav>
+    var nav = _react2['default'].createElement(
+      _Nav2['default'],
+      _extends({}, props, { activeKey: activeKey, onSelect: this.handleSelect, ref: 'tabs' }),
+      _utilsValidComponentChildren2['default'].map(this.props.children, renderTabIfSet, this)
     );
 
-    return (
-      <div>
-        {nav}
-        <div id={id} className="tab-content" ref="panes">
-          {ValidComponentChildren.map(this.props.children, this.renderPane)}
-        </div>
-      </div>
+    return _react2['default'].createElement(
+      'div',
+      null,
+      nav,
+      _react2['default'].createElement(
+        'div',
+        { id: id, className: 'tab-content', ref: 'panes' },
+        _utilsValidComponentChildren2['default'].map(this.props.children, this.renderPane)
+      )
     );
   },
 
-  getActiveKey() {
+  getActiveKey: function getActiveKey() {
     return this.props.activeKey != null ? this.props.activeKey : this.state.activeKey;
   },
 
-  renderPane(child, index) {
-    let activeKey = this.getActiveKey();
+  renderPane: function renderPane(child, index) {
+    var activeKey = this.getActiveKey();
 
-    let active = (child.props.eventKey === activeKey &&
-            (this.state.previousActiveKey == null || !this.props.animation));
+    var active = child.props.eventKey === activeKey && (this.state.previousActiveKey == null || !this.props.animation);
 
-    return cloneElement(
-        child,
-        {
-          active,
-          id: panelId(this.props, child),
-          'aria-labelledby': tabId(this.props, child),
-          key: child.key ? child.key : index,
-          animation: this.props.animation,
-          onAnimateOutEnd: (this.state.previousActiveKey != null &&
-            child.props.eventKey === this.state.previousActiveKey) ? this.handlePaneAnimateOutEnd : null
-        }
-      );
+    return (0, _react.cloneElement)(child, {
+      active: active,
+      id: panelId(this.props, child),
+      'aria-labelledby': tabId(this.props, child),
+      key: child.key ? child.key : index,
+      animation: this.props.animation,
+      onAnimateOutEnd: this.state.previousActiveKey != null && child.props.eventKey === this.state.previousActiveKey ? this.handlePaneAnimateOutEnd : null
+    });
   },
 
-  renderTab(child) {
-    let {eventKey, className, tab, disabled } = child.props;
+  renderTab: function renderTab(child) {
+    var _child$props = child.props;
+    var eventKey = _child$props.eventKey;
+    var className = _child$props.className;
+    var tab = _child$props.tab;
+    var disabled = _child$props.disabled;
 
-    return (
-      <NavItem
-        linkId={tabId(this.props, child)}
-        ref={'tab' + eventKey}
-        aria-controls={panelId(this.props, child)}
-        eventKey={eventKey}
-        className={className}
-        disabled={disabled}>
-        {tab}
-      </NavItem>
+    return _react2['default'].createElement(
+      _NavItem2['default'],
+      {
+        linkId: tabId(this.props, child),
+        ref: 'tab' + eventKey,
+        'aria-controls': panelId(this.props, child),
+        eventKey: eventKey,
+        className: className,
+        disabled: disabled },
+      tab
     );
   },
 
-  shouldComponentUpdate() {
+  shouldComponentUpdate: function shouldComponentUpdate() {
     // Defer any updates to this component during the `onSelect` handler.
     return !this._isChanging;
   },
 
-  handleSelect(key) {
+  handleSelect: function handleSelect(key) {
     if (this.props.onSelect) {
       this._isChanging = true;
       this.props.onSelect(key);
@@ -148,4 +181,5 @@ const TabbedArea = React.createClass({
   }
 });
 
-export default TabbedArea;
+exports['default'] = TabbedArea;
+module.exports = exports['default'];

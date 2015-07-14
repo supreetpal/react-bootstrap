@@ -1,39 +1,59 @@
-import React from 'react';
-import classNames from 'classnames';
-import CustomPropTypes from './utils/CustomPropTypes';
+'use strict';
 
-const Grid = React.createClass({
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _utilsCustomPropTypes = require('./utils/CustomPropTypes');
+
+var _utilsCustomPropTypes2 = _interopRequireDefault(_utilsCustomPropTypes);
+
+var Grid = _react2['default'].createClass({
+  displayName: 'Grid',
+
   propTypes: {
     /**
      * Turn any fixed-width grid layout into a full-width layout by this property.
      *
      * Adds `container-fluid` class.
      */
-    fluid: React.PropTypes.bool,
+    fluid: _react2['default'].PropTypes.bool,
     /**
      * You can use a custom element for this component
      */
-    componentClass: CustomPropTypes.elementType
+    componentClass: _utilsCustomPropTypes2['default'].elementType
   },
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       componentClass: 'div'
     };
   },
 
-  render() {
-    let ComponentClass = this.props.componentClass;
-    let className = this.props.fluid ? 'container-fluid' : 'container';
+  render: function render() {
+    var ComponentClass = this.props.componentClass;
+    var className = this.props.fluid ? 'container-fluid' : 'container';
 
-    return (
-      <ComponentClass
-        {...this.props}
-        className={classNames(this.props.className, className)}>
-        {this.props.children}
-      </ComponentClass>
+    return _react2['default'].createElement(
+      ComponentClass,
+      _extends({}, this.props, {
+        className: (0, _classnames2['default'])(this.props.className, className) }),
+      this.props.children
     );
   }
 });
 
-export default Grid;
+exports['default'] = Grid;
+module.exports = exports['default'];

@@ -1,14 +1,29 @@
-import React from 'react';
-import domUtils from './utils/domUtils';
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _utilsDomUtils = require('./utils/domUtils');
+
+var _utilsDomUtils2 = _interopRequireDefault(_utilsDomUtils);
 
 // TODO: listen for onTransitionEnd to remove el
-function getElementsAndSelf (root, classes){
-  let els = root.querySelectorAll('.' + classes.join('.'));
+function getElementsAndSelf(root, classes) {
+  var els = root.querySelectorAll('.' + classes.join('.'));
 
-  els = [].map.call(els, function(e){ return e; });
+  els = [].map.call(els, function (e) {
+    return e;
+  });
 
-  for(let i = 0; i < classes.length; i++){
-    if( !root.className.match(new RegExp('\\b' + classes[i] + '\\b'))){
+  for (var i = 0; i < classes.length; i++) {
+    if (!root.className.match(new RegExp('\\b' + classes[i] + '\\b'))) {
       return els;
     }
   }
@@ -16,12 +31,12 @@ function getElementsAndSelf (root, classes){
   return els;
 }
 
-export default {
-  _fadeIn() {
-    let els;
+exports['default'] = {
+  _fadeIn: function _fadeIn() {
+    var els = undefined;
 
     if (this.isMounted()) {
-      els = getElementsAndSelf(React.findDOMNode(this), ['fade']);
+      els = getElementsAndSelf(_react2['default'].findDOMNode(this), ['fade']);
 
       if (els.length) {
         els.forEach(function (el) {
@@ -31,8 +46,8 @@ export default {
     }
   },
 
-  _fadeOut() {
-    let els = getElementsAndSelf(this._fadeOutEl, ['fade', 'in']);
+  _fadeOut: function _fadeOut() {
+    var els = getElementsAndSelf(this._fadeOutEl, ['fade', 'in']);
 
     if (els.length) {
       els.forEach(function (el) {
@@ -43,30 +58,30 @@ export default {
     setTimeout(this._handleFadeOutEnd, 300);
   },
 
-  _handleFadeOutEnd() {
+  _handleFadeOutEnd: function _handleFadeOutEnd() {
     if (this._fadeOutEl && this._fadeOutEl.parentNode) {
       this._fadeOutEl.parentNode.removeChild(this._fadeOutEl);
     }
   },
 
-  componentDidMount() {
+  componentDidMount: function componentDidMount() {
     if (document.querySelectorAll) {
       // Firefox needs delay for transition to be triggered
       setTimeout(this._fadeIn, 20);
     }
   },
 
-  componentWillUnmount() {
-    let els = getElementsAndSelf(React.findDOMNode(this), ['fade']);
-    let container = (this.props.container && React.findDOMNode(this.props.container)) ||
-          domUtils.ownerDocument(this).body;
+  componentWillUnmount: function componentWillUnmount() {
+    var els = getElementsAndSelf(_react2['default'].findDOMNode(this), ['fade']);
+    var container = this.props.container && _react2['default'].findDOMNode(this.props.container) || _utilsDomUtils2['default'].ownerDocument(this).body;
 
     if (els.length) {
       this._fadeOutEl = document.createElement('div');
       container.appendChild(this._fadeOutEl);
-      this._fadeOutEl.appendChild(React.findDOMNode(this).cloneNode(true));
+      this._fadeOutEl.appendChild(_react2['default'].findDOMNode(this).cloneNode(true));
       // Firefox needs delay for transition to be triggered
       setTimeout(this._fadeOut, 20);
     }
   }
 };
+module.exports = exports['default'];

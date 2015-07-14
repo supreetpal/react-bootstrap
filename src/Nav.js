@@ -1,80 +1,111 @@
-import React, { cloneElement } from 'react';
-import BootstrapMixin from './BootstrapMixin';
-import CollapsibleMixin from './CollapsibleMixin';
-import classNames from 'classnames';
-import domUtils from './utils/domUtils';
+'use strict';
 
-import ValidComponentChildren from './utils/ValidComponentChildren';
-import createChainedFunction from './utils/createChainedFunction';
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-const Nav = React.createClass({
-  mixins: [BootstrapMixin, CollapsibleMixin],
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _BootstrapMixin = require('./BootstrapMixin');
+
+var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+
+var _CollapsibleMixin = require('./CollapsibleMixin');
+
+var _CollapsibleMixin2 = _interopRequireDefault(_CollapsibleMixin);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _utilsDomUtils = require('./utils/domUtils');
+
+var _utilsDomUtils2 = _interopRequireDefault(_utilsDomUtils);
+
+var _utilsValidComponentChildren = require('./utils/ValidComponentChildren');
+
+var _utilsValidComponentChildren2 = _interopRequireDefault(_utilsValidComponentChildren);
+
+var _utilsCreateChainedFunction = require('./utils/createChainedFunction');
+
+var _utilsCreateChainedFunction2 = _interopRequireDefault(_utilsCreateChainedFunction);
+
+var Nav = _react2['default'].createClass({
+  displayName: 'Nav',
+
+  mixins: [_BootstrapMixin2['default'], _CollapsibleMixin2['default']],
 
   propTypes: {
-    activeHref: React.PropTypes.string,
-    activeKey: React.PropTypes.any,
-    bsStyle: React.PropTypes.oneOf(['tabs', 'pills']),
-    stacked: React.PropTypes.bool,
-    justified: React.PropTypes.bool,
-    onSelect: React.PropTypes.func,
-    collapsible: React.PropTypes.bool,
+    activeHref: _react2['default'].PropTypes.string,
+    activeKey: _react2['default'].PropTypes.any,
+    bsStyle: _react2['default'].PropTypes.oneOf(['tabs', 'pills']),
+    stacked: _react2['default'].PropTypes.bool,
+    justified: _react2['default'].PropTypes.bool,
+    onSelect: _react2['default'].PropTypes.func,
+    collapsible: _react2['default'].PropTypes.bool,
     /**
      * CSS classes for the wrapper `nav` element
      */
-    className: React.PropTypes.string,
+    className: _react2['default'].PropTypes.string,
     /**
      * HTML id for the wrapper `nav` element
      */
-    id: React.PropTypes.string,
+    id: _react2['default'].PropTypes.string,
     /**
      * CSS classes for the inner `ul` element
      */
-    ulClassName: React.PropTypes.string,
+    ulClassName: _react2['default'].PropTypes.string,
     /**
      * HTML id for the inner `ul` element
      */
-    ulId: React.PropTypes.string,
-    expanded: React.PropTypes.bool,
-    navbar: React.PropTypes.bool,
-    eventKey: React.PropTypes.any,
-    pullRight: React.PropTypes.bool,
-    right: React.PropTypes.bool
+    ulId: _react2['default'].PropTypes.string,
+    expanded: _react2['default'].PropTypes.bool,
+    navbar: _react2['default'].PropTypes.bool,
+    eventKey: _react2['default'].PropTypes.any,
+    pullRight: _react2['default'].PropTypes.bool,
+    right: _react2['default'].PropTypes.bool
   },
 
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       bsClass: 'nav'
     };
   },
 
-  getCollapsibleDOMNode() {
-    return React.findDOMNode(this);
+  getCollapsibleDOMNode: function getCollapsibleDOMNode() {
+    return _react2['default'].findDOMNode(this);
   },
 
-  getCollapsibleDimensionValue() {
-    let node = React.findDOMNode(this.refs.ul);
-    let height = node.offsetHeight;
-    let computedStyles = domUtils.getComputedStyles(node);
+  getCollapsibleDimensionValue: function getCollapsibleDimensionValue() {
+    var node = _react2['default'].findDOMNode(this.refs.ul);
+    var height = node.offsetHeight;
+    var computedStyles = _utilsDomUtils2['default'].getComputedStyles(node);
 
     return height + parseInt(computedStyles.marginTop, 10) + parseInt(computedStyles.marginBottom, 10);
   },
 
-  render() {
-    const classes = this.props.collapsible ? this.getCollapsibleClassSet('navbar-collapse') : null;
+  render: function render() {
+    var classes = this.props.collapsible ? this.getCollapsibleClassSet('navbar-collapse') : null;
 
     if (this.props.navbar && !this.props.collapsible) {
-      return (this.renderUl());
+      return this.renderUl();
     }
 
-    return (
-      <nav {...this.props} className={classNames(this.props.className, classes)}>
-        { this.renderUl() }
-      </nav>
+    return _react2['default'].createElement(
+      'nav',
+      _extends({}, this.props, { className: (0, _classnames2['default'])(this.props.className, classes) }),
+      this.renderUl()
     );
   },
 
-  renderUl() {
-    const classes = this.getBsClassSet();
+  renderUl: function renderUl() {
+    var classes = this.getBsClassSet();
 
     classes['nav-stacked'] = this.props.stacked;
     classes['nav-justified'] = this.props.justified;
@@ -82,19 +113,19 @@ const Nav = React.createClass({
     classes['pull-right'] = this.props.pullRight;
     classes['navbar-right'] = this.props.right;
 
-    return (
-      <ul {...this.props}
-        role={this.props.bsStyle === 'tabs' ? 'tablist' : null}
-        className={classNames(this.props.ulClassName, classes)}
-        id={this.props.ulId}
-        ref="ul"
-      >
-        {ValidComponentChildren.map(this.props.children, this.renderNavItem)}
-      </ul>
+    return _react2['default'].createElement(
+      'ul',
+      _extends({}, this.props, {
+        role: this.props.bsStyle === 'tabs' ? 'tablist' : null,
+        className: (0, _classnames2['default'])(this.props.ulClassName, classes),
+        id: this.props.ulId,
+        ref: 'ul'
+      }),
+      _utilsValidComponentChildren2['default'].map(this.props.children, this.renderNavItem)
     );
   },
 
-  getChildActiveProp(child) {
+  getChildActiveProp: function getChildActiveProp(child) {
     if (child.props.active) {
       return true;
     }
@@ -112,20 +143,18 @@ const Nav = React.createClass({
     return child.props.active;
   },
 
-  renderNavItem(child, index) {
-    return cloneElement(
-      child,
-      {
-        role: this.props.bsStyle === 'tabs' ? 'tab' : null,
-        active: this.getChildActiveProp(child),
-        activeKey: this.props.activeKey,
-        activeHref: this.props.activeHref,
-        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
-        key: child.key ? child.key : index,
-        navItem: true
-      }
-    );
+  renderNavItem: function renderNavItem(child, index) {
+    return (0, _react.cloneElement)(child, {
+      role: this.props.bsStyle === 'tabs' ? 'tab' : null,
+      active: this.getChildActiveProp(child),
+      activeKey: this.props.activeKey,
+      activeHref: this.props.activeHref,
+      onSelect: (0, _utilsCreateChainedFunction2['default'])(child.props.onSelect, this.props.onSelect),
+      key: child.key ? child.key : index,
+      navItem: true
+    });
   }
 });
 
-export default Nav;
+exports['default'] = Nav;
+module.exports = exports['default'];

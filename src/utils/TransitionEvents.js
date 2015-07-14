@@ -11,18 +11,19 @@
  * https://github.com/facebook/react/blob/v0.12.0/PATENTS
  */
 
-const canUseDOM = !!(
-  typeof window !== 'undefined' &&
-    window.document &&
-    window.document.createElement
-  );
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 /**
  * EVENT_NAME_MAP is used to determine which event fired when a
  * transition/animation ends, based on the style property used to
  * define that event.
  */
-const EVENT_NAME_MAP = {
+var EVENT_NAME_MAP = {
   transitionend: {
     'transition': 'transitionend',
     'WebkitTransition': 'webkitTransitionEnd',
@@ -40,11 +41,11 @@ const EVENT_NAME_MAP = {
   }
 };
 
-let endEvents = [];
+var endEvents = [];
 
 function detectEvents() {
-  let testEl = document.createElement('div');
-  let style = testEl.style;
+  var testEl = document.createElement('div');
+  var style = testEl.style;
 
   // On some platforms, in particular some releases of Android 4.x,
   // the un-prefixed "animation" and "transition" properties are defined on the
@@ -59,9 +60,9 @@ function detectEvents() {
     delete EVENT_NAME_MAP.transitionend.transition;
   }
 
-  for (let baseEventName in EVENT_NAME_MAP) {
-    let baseEvents = EVENT_NAME_MAP[baseEventName];
-    for (let styleName in baseEvents) {
+  for (var baseEventName in EVENT_NAME_MAP) {
+    var baseEvents = EVENT_NAME_MAP[baseEventName];
+    for (var styleName in baseEvents) {
       if (styleName in style) {
         endEvents.push(baseEvents[styleName]);
         break;
@@ -87,27 +88,28 @@ function removeEventListener(node, eventName, eventListener) {
   node.removeEventListener(eventName, eventListener, false);
 }
 
-const ReactTransitionEvents = {
-  addEndEventListener(node, eventListener) {
+var ReactTransitionEvents = {
+  addEndEventListener: function addEndEventListener(node, eventListener) {
     if (endEvents.length === 0) {
       // If CSS transitions are not supported, trigger an "end animation"
       // event immediately.
       window.setTimeout(eventListener, 0);
       return;
     }
-    endEvents.forEach(function(endEvent) {
+    endEvents.forEach(function (endEvent) {
       addEventListener(node, endEvent, eventListener);
     });
   },
 
-  removeEndEventListener(node, eventListener) {
+  removeEndEventListener: function removeEndEventListener(node, eventListener) {
     if (endEvents.length === 0) {
       return;
     }
-    endEvents.forEach(function(endEvent) {
+    endEvents.forEach(function (endEvent) {
       removeEventListener(node, endEvent, eventListener);
     });
   }
 };
 
-export default ReactTransitionEvents;
+exports['default'] = ReactTransitionEvents;
+module.exports = exports['default'];
