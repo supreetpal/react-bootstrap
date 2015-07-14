@@ -1,4 +1,5 @@
-# react-bootstrap
+# react-bootstrap [Non ES6 Source Code]
+### This repo is an exact replica of its fork, only the src folder has been transformed using [babel](https://babeljs.io/).
 
 [Bootstrap 3][bootstrap] components built with [React][react]
 
